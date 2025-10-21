@@ -70,11 +70,11 @@ function togglePassword() {
 document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const rut = document.getElementById('rut').value;
+    const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     
     // Aquí puedes agregar la lógica de validación y envío
-    console.log('RUT:', rut);
+    console.log('Email:', email);
     console.log('Password:', password);
     
     alert('Formulario enviado (demo)');

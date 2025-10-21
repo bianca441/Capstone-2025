@@ -469,6 +469,22 @@ body {
   width: 30px;
 }
 
+.login-btn {
+  display: block;
+  width: 100%;
+  padding: 18px;
+  background: #003a70;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 30px;
+  text-align: center;
+  text-decoration: none;
+}
 /* Media queries */
 
 @media (max-width: 800px) {

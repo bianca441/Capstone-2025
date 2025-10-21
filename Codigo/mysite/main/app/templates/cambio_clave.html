@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambio de Contraseña</title>
+    <link rel="stylesheet" href="../css/cambio_clave.css">
+</head>
+<body>
+    <div class="left-section">
+        <a href="../templates/login.html" class="back-link">IR A SITIO PÚBLICO</a>
+        
+        <div class="header">
+            <div class="logo-container">
+                <div class="logo-primary">Tu Bolsillo</div>
+            </div>
+        </div>
+
+        <div class="password-container">
+            <h1>Cambiar Contraseña</h1>
+            <p class="subtitle">Por tu seguridad, te recomendamos cambiar tu contraseña periódicamente.</p>
+
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label for="currentPassword">Contraseña actual</label>
+                    <input type="password" id="currentPassword" placeholder="" required>
+                    <span class="password-toggle" onclick="togglePasswordField('currentPassword')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">Nueva contraseña</label>
+                    <input type="password" id="newPassword" placeholder="" required>
+                    <span class="password-toggle" onclick="togglePasswordField('newPassword')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar nueva contraseña</label>
+                    <input type="password" id="confirmPassword" placeholder="" required>
+                    <span class="password-toggle" onclick="togglePasswordField('confirmPassword')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </span>
+                </div>
+
+                <div class="password-requirements">
+                    <h3>Tu contraseña debe cumplir con:</h3>
+                    <ul>
+                        <li id="req-length">
+                            <span class="check-icon">✕</span>
+                            Mínimo 8 caracteres
+                        </li>
+                        <li id="req-uppercase">
+                            <span class="check-icon">✕</span>
+                            Al menos una letra mayúscula
+                        </li>
+                        <li id="req-lowercase">
+                            <span class="check-icon">✕</span>
+                            Al menos una letra minúscula
+                        </li>
+                        <li id="req-number">
+                            <span class="check-icon">✕</span>
+                            Al menos un número
+                        </li>
+                        <li id="req-special">
+                            <span class="check-icon">✕</span>
+                            Al menos un carácter especial (@, #, $, etc.)
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="errorMessage" class="error-message"></div>
+
+                <button type="submit" class="submit-btn">CAMBIAR CONTRASEÑA</button>
+
+                <div class="help-link">
+                    <a href="#">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="right-section">
+        <div class="carousel">
+            <div class="carousel-slide active" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200" alt="Montaña">
+                <div class="carousel-content">
+                    <img src="https://images.unsplash.com/photo-1633265486064-086b219458ec?w=400" alt="Seguridad">
+                    <h2>Mantén tu cuenta segura con una contraseña fuerte</h2>
+                    <a href="#">CONOCER MÁS ›</a>
+                </div>
+            </div>
+            <div class="carousel-slide" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200" alt="Paisaje">
+                <div class="carousel-content">
+                    <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400" alt="Protección">
+                    <h2>Protegemos tu información financiera las 24 horas</h2>
+                    <a href="#">CONOCER MÁS ›</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-indicators">
+            <div class="indicator active" onclick="goToSlide(0)"></div>
+            <div class="indicator" onclick="goToSlide(1)"></div>
+        </div>
+    </div>
+
+    <script src="../js/cambio_clave.js"></script>
+</body>
+</html>
