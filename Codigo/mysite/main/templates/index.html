@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -8,11 +7,11 @@
     <title>Tu Bolsillo</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{% static 'img/favicon-32x32.png' %}" />
+    <link rel="icon" type="image/png" href="../app/img/favicon-32x32.png"/>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="../app/css/normalize.css" />
+    <link rel="stylesheet" href="../app/css/style.css" />
   </head>
 
   <body>
@@ -25,7 +24,7 @@
         <ul class="nav_link nav_link--menu">
           <li class="nav_items">
             <!-- plantilla login -->
-            <a href="{% url 'login' %}" class="nav_link">Regístrate</a>
+            <a href="../app/templates/login.html" class="nav_link">Inicio</a>
           </li>
           <li class="nav_items">
             <a href="#" class="nav_link">Acerca de</a>
@@ -36,7 +35,7 @@
         </ul>
 
         <div class="nav_menu">
-          <img src="{% static 'img/menu.svg' %}" class="nav_img" alt="Menú" />
+          <img src="../app/img/menu.svg" class="nav_img" alt="Menú" />
         </div>
       </nav>
 
@@ -45,12 +44,9 @@
           Aprende a ordenar tus finanzas de la mejor manera
         </h1>
         <p class="hero_paragraph">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
-          cumque nemo qui? Modi dignissimos consectetur sequi cupiditate,
-          aliquam laborum eveniet doloribus. Rem, culpa? Veritatis beatae
-          accusamus, velit excepturi quam eius.
+          Ordenar tus finanzas es un acto de amor propio y de libertad. No se trata solo de números, sino de tomar el control de tu presente y construir el futuro que deseas.
         </p>
-        <a href="#" class="cta">Comienza ahora</a>
+        <a href="../app/templates/login.html" class="cta">Comienza ahora</a>
       </section>
     </header>
 
@@ -64,7 +60,7 @@
 
         <div class="about__main">
           <article class="about__icons">
-            <img src="{% static 'img/cog.png' %}" class="about__icon" alt="Seguridad" />
+            <img src="../app/img/cog.png" class="about__icon" alt="Seguridad" />
             <h3 class="about__title">Seguridad</h3>
             <p class="about__paragrah">
               Protegemos tus datos con cifrado y protocolos de alta seguridad.
@@ -72,7 +68,7 @@
           </article>
 
           <article class="about__icons">
-            <img src="{% static 'img/paint.svg' %}" class="about__icon" alt="Confidencialidad" />
+            <img src="../app/img/cog.png" class="about__icon" alt="Confidencialidad" />
             <h3 class="about__title">Confidencialidad</h3>
             <p class="about__paragrah">
               Solo tú puedes acceder a tu información; la privacidad es nuestra prioridad.
@@ -80,7 +76,7 @@
           </article>
 
           <article class="about__icons">
-            <img src="{% static 'img/code.svg' %}" class="about__icon" alt="Automatización" />
+            <img src="../app/img/cog.png" class="about__icon" alt="Automatización" />
             <h3 class="about__title">Automatización</h3>
             <p class="about__paragrah">
               Nuestro sistema analiza tus gastos y genera reportes automáticamente.
@@ -103,7 +99,7 @@
           </div>
 
           <figure class="knowledge__picture">
-            <img src="{% static 'img/macbook.png' %}" class="knowledge__img" alt="Dashboard financiero" />
+            <img src="../app/img/macbook.png" class="knowledge__img" alt="Dashboard financiero" />
           </figure>
         </div>
       </section>
@@ -151,7 +147,7 @@
       <!-- SECCIÓN TESTIMONIOS -->
       <section class="testimony">
         <div class="testimony__container container">
-          <img src="{% static 'img/leftarrow.svg' %}" class="testimony__arrow" id="before" alt="Anterior" />
+          <img src="../app/img/leftarrow.svg" class="testimony__arrow" id="before" alt="Anterior" />
 
           <section class="testimony__body testimony__body--show" data-id="1">
             <div class="testimony__texts">
@@ -165,7 +161,7 @@
             </div>
 
             <figure class="testimony__picture">
-              <img src="{% static 'img/face.jpg' %}" class="testimony__img" alt="Testimonio 1" />
+              <img src="../app/img/joven 1.png" class="testimony__img" alt="Testimonio 1" />
             </figure>
           </section>
 
@@ -180,14 +176,14 @@
               </p>
             </div>
             <figure class="testimony__picture">
-              <img src="{% static 'img/face2.jpg' %}" class="testimony__img" alt="Testimonio 2" />
+              <img src="../app/img/Alejandra.png" class="testimony__img" alt="Testimonio 2" />
             </figure>
           </section>
 
           <section class="testimony__body" data-id="3">
             <div class="testimony__texts">
               <h2 class="subtitle">
-                Karen Arteaga,
+                Karen Arteaga y su Esposo,
                 <span class="testimony__course">Usuaria</span>
               </h2>
               <p class="testimony__review">
@@ -195,7 +191,7 @@
               </p>
             </div>
             <figure class="testimony__picture">
-              <img src="{% static 'img/face3.jpg' %}" class="testimony__img" alt="Testimonio 3" />
+              <img src="../app/img/Pareja.png" class="testimony__img" alt="Testimonio 3" />
             </figure>
           </section>
 
@@ -210,11 +206,11 @@
               </p>
             </div>
             <figure class="testimony__picture">
-              <img src="{% static 'img/face4.jpg' %}" class="testimony__img" alt="Testimonio 4" />
+              <img src="../app/img/Kevin.png" class="testimony__img" alt="Testimonio 4" />
             </figure>
           </section>
 
-          <img src="{% static 'img/rightarrow.svg' %}" class="testimony__arrow" id="next" alt="Siguiente" />
+          <img src="../app/img/rightarrow.svg" class="testimony__arrow" id="next" alt="Siguiente" />
         </div>
       </section>
 
@@ -231,7 +227,7 @@
               <h3 class="questions__title">
                 ¿Qué es Tu Bolsillo?
                 <span class="questions__arrow">
-                  <img src="{% static 'img/arrow.svg' %}" class="questions__img" alt="Abrir respuesta" />
+                  <img src="../app/img/arrow.svg" class="questions__img" alt="Abrir respuesta" />
                 </span>
               </h3>
               <p class="questions__show">
@@ -245,7 +241,7 @@
               <h3 class="questions__title">
                 ¿Necesito conocimientos financieros?
                 <span class="questions__arrow">
-                  <img src="{% static 'img/arrow.svg' %}" class="questions__img" alt="Abrir respuesta" />
+                  <img src="../app/img/arrow.svg" class="questions__img" alt="Abrir respuesta" />
                 </span>
               </h3>
               <p class="questions__show">
@@ -259,7 +255,7 @@
               <h3 class="questions__title">
                 ¿Cómo se protegen mis datos?
                 <span class="questions__arrow">
-                  <img src="{% static 'img/arrow.svg' %}" class="questions__img" alt="Abrir respuesta" />
+                  <img src="../app/img/arrow.svg" class="questions__img" alt="Abrir respuesta" />
                 </span>
               </h3>
               <p class="questions__show">
@@ -274,9 +270,12 @@
           <p class="questions__copy">
             Regístrate y descubre el poder de tener tus finanzas en orden con Tu Bolsillo.
           </p>
-          <a href="{% url 'login' %}" class="cta">Comienza ahora</a>
+          <a href="../app/templates/login.html" class="cta">Comienza ahora</a>
         </section>
       </section>
     </main>
+
+    <script src="../app/js/menu.js"></script>
+    <script src="../app/js/questions.js"></script>
   </body>
 </html>
