@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -5,23 +6,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tu Bolsillo</title>
-    <link
-      rel="shortcut icon"
-      type="image/x-icon"
-      href="app/static/app/img/favicon-32x32.png"
-    />
-    <link rel="stylesheet" href="./app/static/app/css/style.css" />
-    <link rel="stylesheet" href="./app/static/app/css/normalize.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'img/favicon-32x32.png' %}" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
+
   <body>
     <header class="hero">
       <nav class="nav container">
         <div class="nav_logo">
           <h2 class="nav_titulo">Tu Bolsillo</h2>
         </div>
+
         <ul class="nav_link nav_link--menu">
           <li class="nav_items">
-            <a href="./app/static/app/templates/login.html" class="nav_link">Registrate</a>
+            <!-- plantilla login -->
+            <a href="{% url 'login' %}" class="nav_link">Regístrate</a>
           </li>
           <li class="nav_items">
             <a href="#" class="nav_link">Acerca de</a>
@@ -30,13 +34,15 @@
             <a href="#" class="nav_link">Contacto</a>
           </li>
         </ul>
+
         <div class="nav_menu">
-          <img src="./app/static/app/img/menu.svg" class="nav_img" />
+          <img src="{% static 'img/menu.svg' %}" class="nav_img" alt="Menú" />
         </div>
       </nav>
+
       <section class="hero_container container">
         <h1 class="hero_title">
-          Aprende a Ordenar tus finanzas de las mejor manera
+          Aprende a ordenar tus finanzas de la mejor manera
         </h1>
         <p class="hero_paragraph">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
@@ -44,227 +50,192 @@
           aliquam laborum eveniet doloribus. Rem, culpa? Veritatis beatae
           accusamus, velit excepturi quam eius.
         </p>
-        <a href="#" class="cta">Comienza Ahora</a>
+        <a href="#" class="cta">Comienza ahora</a>
       </section>
     </header>
+
     <main>
+      <!-- SECCIÓN BENEFICIOS -->
       <section class="container about">
-        <h2 class="subtitle">¿Qué Beneficios Ofrecemos?</h2>
+        <h2 class="subtitle">¿Qué beneficios ofrecemos?</h2>
         <p class="about__paragraph">
-          Principalmente ofrecemos cervicios financieros para su comodidad, garantizando la seguridad de sus datos y como abordarlos.
+          Ofrecemos servicios financieros diseñados para tu comodidad, garantizando la seguridad y privacidad de tus datos.
         </p>
 
         <div class="about__main">
           <article class="about__icons">
-            <img src="./app/static/app/img/cog.png" class="about__icon" />
+            <img src="{% static 'img/cog.png' %}" class="about__icon" alt="Seguridad" />
             <h3 class="about__title">Seguridad</h3>
             <p class="about__paragrah">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae
-              tempore porro eius facilis?
+              Protegemos tus datos con cifrado y protocolos de alta seguridad.
             </p>
           </article>
 
           <article class="about__icons">
-            <img src="./images/paint.svg" class="about__icon" />
+            <img src="{% static 'img/paint.svg' %}" class="about__icon" alt="Confidencialidad" />
             <h3 class="about__title">Confidencialidad</h3>
             <p class="about__paragrah">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae
-              tempore porro eius facilis?
+              Solo tú puedes acceder a tu información; la privacidad es nuestra prioridad.
             </p>
           </article>
 
           <article class="about__icons">
-            <img src="./images/code.svg" class="about__icon" />
-            <h3 class="about__title">Sass</h3>
+            <img src="{% static 'img/code.svg' %}" class="about__icon" alt="Automatización" />
+            <h3 class="about__title">Automatización</h3>
             <p class="about__paragrah">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae
-              tempore porro eius facilis?
+              Nuestro sistema analiza tus gastos y genera reportes automáticamente.
             </p>
           </article>
         </div>
       </section>
 
+      <!-- SECCIÓN CONOCIMIENTO -->
       <section class="knowledge">
         <div class="knowledge__container container">
           <div class="knowledege__texts">
             <h2 class="subtitle">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Aprende a manejar tus finanzas de forma práctica y eficiente
             </h2>
             <p class="knowledge__paragraph">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Excepturi, aliquam nemo in facere suscipit at delectus unde labore
-              ad officia iste accusantium eaque aperiam laborum est voluptate
-              totam? Modi, obcaecati?
+              Organiza tus ingresos y gastos, visualiza tus metas y toma decisiones financieras más inteligentes.
             </p>
-            <a href="#" class="cta">Entra al curso</a>
+            <a href="#" class="cta">Descubre más</a>
           </div>
 
           <figure class="knowledge__picture">
-            <img src="./images/macbook.png" class="knowledge__img" />
+            <img src="{% static 'img/macbook.png' %}" class="knowledge__img" alt="Dashboard financiero" />
           </figure>
         </div>
       </section>
 
+      <!-- SECCIÓN PLANES -->
       <section class="price container">
-        <h2 class="subtitle">Obten el plan perfecto para aprender</h2>
+        <h2 class="subtitle">Obtén el plan perfecto para ti</h2>
 
         <div class="price__table">
           <div class="price__element">
-            <p class="price__name">Flexbox</p>
-            <h3 class="price__price">Free</h3>
-
+            <p class="price__name">Básico</p>
+            <h3 class="price__price">Gratis</h3>
             <div class="price__items">
-              <p class="price__features">Flexbox</p>
-              <p class="price__features">Layouts</p>
-              <p class="price__features">Responsive</p>
+              <p class="price__features">Control de gastos</p>
+              <p class="price__features">Reportes simples</p>
+              <p class="price__features">Acceso limitado</p>
             </div>
-
             <a href="#" class="price__cta">Empieza ahora</a>
           </div>
 
           <div class="price__element price__element--best">
-            <p class="price__name">Grid</p>
-            <h3 class="price__price">$30000</h3>
-
+            <p class="price__name">Avanzado</p>
+            <h3 class="price__price">$30.000</h3>
             <div class="price__items">
-              <p class="price__features">Grid</p>
-              <p class="price__features">Implicit Grid</p>
-              <p class="price__features">Responsive</p>
+              <p class="price__features">Gráficos interactivos</p>
+              <p class="price__features">Comparación mensual</p>
+              <p class="price__features">Soporte prioritario</p>
             </div>
-
-            <a href="#" class="price__cta">Empieza ahora</a>
+            <a href="#" class="price__cta">Seleccionar</a>
           </div>
 
           <div class="price__element">
-            <p class="price__name">Animaciones</p>
-            <h3 class="price__price">$50000</h3>
-
+            <p class="price__name">Premium</p>
+            <h3 class="price__price">$50.000</h3>
             <div class="price__items">
-              <p class="price__features">Animation</p>
-              <p class="price__features">Transition</p>
-              <p class="price__features">Render Website</p>
+              <p class="price__features">Dashboard completo</p>
+              <p class="price__features">Asesor financiero</p>
+              <p class="price__features">Análisis predictivo</p>
             </div>
-
             <a href="#" class="price__cta">Empieza ahora</a>
           </div>
         </div>
       </section>
 
+      <!-- SECCIÓN TESTIMONIOS -->
       <section class="testimony">
         <div class="testimony__container container">
-          <img
-            src="./images/leftarrow.svg"
-            class="testimony__arrow"
-            id="before"
-          />
+          <img src="{% static 'img/leftarrow.svg' %}" class="testimony__arrow" id="before" alt="Anterior" />
 
           <section class="testimony__body testimony__body--show" data-id="1">
             <div class="testimony__texts">
               <h2 class="subtitle">
-                Mi nombre es Jordan Alexander,
-                <span class="testimony__course">estudiante de CSS.</span>
+                Jordan Alexander,
+                <span class="testimony__course">Usuario</span>
               </h2>
               <p class="testimony__review">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut est
-                esse, asperiores eaque totam nulla repudiandae quasi, deserunt
-                culpa exercitationem blanditiis laborum veniam laboriosam saepe
-                reiciendis dolorem. Cum, ratione voluptatum!
+                “Tu Bolsillo me ayudó a tener claridad financiera y reducir mis gastos innecesarios.”
               </p>
             </div>
 
             <figure class="testimony__picture">
-              <img src="./images/face.jpg" class="testimony__img" />
+              <img src="{% static 'img/face.jpg' %}" class="testimony__img" alt="Testimonio 1" />
             </figure>
           </section>
 
           <section class="testimony__body" data-id="2">
             <div class="testimony__texts">
               <h2 class="subtitle">
-                Mi nombre es Alejandra Perez,
-                <span class="testimony__course">estudiante de CSS.</span>
+                Alejandra Pérez,
+                <span class="testimony__course">Emprendedora</span>
               </h2>
               <p class="testimony__review">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut est
-                esse, asperiores eaque laborum veniam laboriosam saepe
-                reiciendis dolorem. Cum, ratione voluptatum!
+                “Gracias a Tu Bolsillo tengo control total de mis ingresos y gastos de negocio.”
               </p>
             </div>
-
             <figure class="testimony__picture">
-              <img src="./images/face2.jpg" class="testimony__img" />
+              <img src="{% static 'img/face2.jpg' %}" class="testimony__img" alt="Testimonio 2" />
             </figure>
           </section>
 
           <section class="testimony__body" data-id="3">
             <div class="testimony__texts">
               <h2 class="subtitle">
-                Mi nombre es Karen Arteaga,
-                <span class="testimony__course">estudiante de CSS.</span>
+                Karen Arteaga,
+                <span class="testimony__course">Usuaria</span>
               </h2>
               <p class="testimony__review">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut est
-                esse, niam laboriosam saepe reiciendis dolorem. Cum, ratione
-                voluptatum!
+                “Una app intuitiva y clara. En minutos entendí en qué gasto más y cómo mejorar.”
               </p>
             </div>
-
             <figure class="testimony__picture">
-              <img src="./images/face3.jpg" class="testimony__img" />
+              <img src="{% static 'img/face3.jpg' %}" class="testimony__img" alt="Testimonio 3" />
             </figure>
           </section>
 
           <section class="testimony__body" data-id="4">
             <div class="testimony__texts">
               <h2 class="subtitle">
-                Mi nombre es Kevin Ramirez,
-                <span class="testimony__course">estudiante de CSS.</span>
+                Kevin Ramírez,
+                <span class="testimony__course">Usuario</span>
               </h2>
               <p class="testimony__review">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut est
-                esse, niam laboriosam saepe reiciendis dolorem. Cum, ratione
-                voluptatum!
+                “Me encanta ver mi evolución mensual en gráficos fáciles de entender.”
               </p>
             </div>
-
             <figure class="testimony__picture">
-              <img src="./images/face4.jpg" class="testimony__img" />
+              <img src="{% static 'img/face4.jpg' %}" class="testimony__img" alt="Testimonio 4" />
             </figure>
           </section>
 
-          <img
-            src="./images/rightarrow.svg"
-            class="testimony__arrow"
-            id="next"
-          />
+          <img src="{% static 'img/rightarrow.svg' %}" class="testimony__arrow" id="next" alt="Siguiente" />
         </div>
       </section>
 
+      <!-- SECCIÓN PREGUNTAS -->
       <section class="questions container">
         <h2 class="subtitle">Preguntas frecuentes</h2>
         <p class="questions__paragraph">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea, porro
-          doloribus neque perspiciatis sapiente fuga.
+          Resolvemos las dudas más comunes sobre el uso de Tu Bolsillo y cómo aprovecharlo al máximo.
         </p>
 
         <section class="questions__container">
           <article class="questions__padding">
             <div class="questions__answer">
               <h3 class="questions__title">
-                ¿Qué es CSS?
+                ¿Qué es Tu Bolsillo?
                 <span class="questions__arrow">
-                  <img src="./images/arrow.svg" class="questions__img" />
+                  <img src="{% static 'img/arrow.svg' %}" class="questions__img" alt="Abrir respuesta" />
                 </span>
               </h3>
-
               <p class="questions__show">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos
-                facere, quidem eum id excepturi assumenda explicabo nam
-                accusamus veritatis voluptates eveniet adipisci, dicta nihil
-                nemo modi possimus officiis quam atque? Lorem ipsum, dolor sit
-                amet consectetur adipisicing elit. Quos facere, quidem eum id
-                excepturi assumenda explicabo nam accusamus veritatis voluptates
-                eveniet adipisci, dicta nihil nemo modi possimus officiis quam
-                atque?
+                Es una app web que te permite registrar, analizar y visualizar tus finanzas personales de forma práctica.
               </p>
             </div>
           </article>
@@ -272,21 +243,13 @@
           <article class="questions__padding">
             <div class="questions__answer">
               <h3 class="questions__title">
-                ¿Qué aprenderé en este curso?
+                ¿Necesito conocimientos financieros?
                 <span class="questions__arrow">
-                  <img src="./images/arrow.svg" class="questions__img" />
+                  <img src="{% static 'img/arrow.svg' %}" class="questions__img" alt="Abrir respuesta" />
                 </span>
               </h3>
-
               <p class="questions__show">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos
-                facere, quidem eum id excepturi assumenda explicabo nam
-                accusamus veritatis voluptates eveniet adipisci, dicta nihil
-                nemo modi possimus officiis quam atque? Lorem ipsum, dolor sit
-                amet consectetur adipisicing elit. Quos facere, quidem eum id
-                excepturi assumenda explicabo nam accusamus veritatis voluptates
-                eveniet adipisci, dicta nihil nemo modi possimus officiis quam
-                atque?
+                No. La app está diseñada para cualquier usuario, con explicaciones simples e intuitivas.
               </p>
             </div>
           </article>
@@ -294,35 +257,24 @@
           <article class="questions__padding">
             <div class="questions__answer">
               <h3 class="questions__title">
-                ¿Qué es CSS GRID?
+                ¿Cómo se protegen mis datos?
                 <span class="questions__arrow">
-                  <img src="./images/arrow.svg" class="questions__img" />
+                  <img src="{% static 'img/arrow.svg' %}" class="questions__img" alt="Abrir respuesta" />
                 </span>
               </h3>
-
               <p class="questions__show">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos
-                facere, quidem eum id excepturi assumenda explicabo nam
-                accusamus veritatis voluptates eveniet adipisci, dicta nihil
-                nemo modi possimus officiis quam atque? Lorem ipsum, dolor sit
-                amet consectetur adipisicing elit. Quos facere, quidem eum id
-                excepturi assumenda explicabo nam accusamus veritatis voluptates
-                eveniet adipisci, dicta nihil nemo modi possimus officiis quam
-                atque?
+                Usamos cifrado SSL y almacenamiento seguro en servidores auditados.
               </p>
             </div>
           </article>
         </section>
 
         <section class="questions__offer">
-          <h2 class="subtitle">¿Estas listo para aprender CSS?</h2>
+          <h2 class="subtitle">¿Listo para empezar?</h2>
           <p class="questions__copy">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet
-            ratione architecto magnam, officiis ex porro vero est voluptates
-            quaerat quibusdam illo veniam reprehenderit eius atque tempora iure
-            ab non autem.
+            Regístrate y descubre el poder de tener tus finanzas en orden con Tu Bolsillo.
           </p>
-          <a href="#" class="cta">Aprende ahora</a>
+          <a href="{% url 'login' %}" class="cta">Comienza ahora</a>
         </section>
       </section>
     </main>
