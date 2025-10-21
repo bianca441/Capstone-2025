@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido a tus Finanzas</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="../img/favicon-32x32.png"
+    />
+</head>
+<body>
+    <div class="left-section">
+        <a href="/mysite/index.html" class="back-link">IR A SITIO PÚBLICO</a>
+        
+        <div class="header">
+            <div class="logo-container">
+                <div class="logo-primary">Tu Bolsillo</div>
+            </div>
+        </div>
+
+        <div class="login-container">
+            <h1>Bienvenido a nuestros servicios</h1>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="rut">Rut</label>
+                    <input type="text" id="rut" placeholder="" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="" required>
+                    <span class="password-toggle" onclick="togglePassword()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </span>
+                </div>
+
+                <button type="submit" class="login-btn">INGRESAR</button>
+
+                <div class="help-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    ¿Problemas con tu clave? <a href="#">Recupérala</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="right-section">
+        <div class="carousel">
+            <div class="carousel-slide active" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200" alt="Montaña">
+                <div class="carousel-content">
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400" alt="Estudiantes">
+                    <h2>Paga tus gastos en educación en cuotas y tasa preferencial</h2>
+                </div>
+            </div>
+            <div class="carousel-slide" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200" alt="Paisaje">
+                <div class="carousel-content">
+                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400" alt="Beneficios">
+                    <h2>Descubre los beneficios de tu tarjeta de crédito</h2>
+                </div>
+            </div>
+            <div class="carousel-slide" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200" alt="Cielo">
+                <div class="carousel-content">
+                    <img src="https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?w=400" alt="Seguros">
+                    <h2>Protege lo que más te importa con nuestros seguros</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-controls">
+            <div class="carousel-indicators">
+                <div class="indicator active" onclick="goToSlide(0)"></div>
+                <div class="indicator" onclick="goToSlide(1)"></div>
+                <div class="indicator" onclick="goToSlide(2)"></div>
+            </div>
+            <button class="carousel-btn" onclick="prevSlide()"></button>
+            <button class="carousel-btn" onclick="nextSlide()"></button>
+            <button class="pause-btn" onclick="toggleAutoplay()">❚❚</button>
+        </div>
+    </div>
+
+    <script src="../js/login.js"></script>
+</body>
+</html>
