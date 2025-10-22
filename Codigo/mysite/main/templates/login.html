@@ -1,19 +1,23 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bienvenido a tus Finanzas</title>
-    <link rel="stylesheet" href="../css/login.css">
-    <link
-      rel="shortcut icon"
-      type="image/x-icon"
-      href="../img/favicon-32x32.png"
-    />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon-32x32.png' %}" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
+
 <body>
+    <!-- Sección izquierda -->
     <div class="left-section">
-        <a href="/mysite/index.html" class="back-link">IR A SITIO PÚBLICO</a>
+        <a href="{% url 'index' %}" class="back-link">IR A SITIO PÚBLICO</a>
         
         <div class="header">
             <div class="logo-container">
@@ -26,13 +30,13 @@
 
             <form id="loginForm">
                 <div class="form-group">
-                    <label type="mail">Correo Electronico</label>
-                    <input type="text" id="mail" required>
+                    <label for="mail">Correo Electrónico</label>
+                    <input type="text" id="mail" name="mail" required>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Contraseña</label>
-                    <input type="password" id="password" placeholder="" required>
+                    <input type="password" id="password" name="password" required>
                     <span class="password-toggle" onclick="togglePassword()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -41,20 +45,23 @@
                     </span>
                 </div>
 
-                <a href="../templates/pagina_principal.html" class="login-btn">INGRESAR</a>
-                 
+                <!-- Botón de ingreso -->
+                <a href="{% url 'pagina_principal' %}" class="login-btn">INGRESAR</a>
+
                 <div class="help-link">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
                         <circle cx="12" cy="12" r="10"></circle>
                         <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
                         <line x1="12" y1="17" x2="12.01" y2="17"></line>
                     </svg>
-                    ¿Problemas con tu clave? <a href="../templates/cambio_clave.html">Recupérala</a>
+                    ¿Problemas con tu clave? 
+                    <a href="{% url 'cambio_clave' %}">Recupérala</a>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- Sección derecha -->
     <div class="right-section">
         <div class="carousel">
             <div class="carousel-slide active" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
@@ -64,6 +71,7 @@
                     <h2>Paga tus gastos en educación en cuotas y tasa preferencial</h2>
                 </div>
             </div>
+
             <div class="carousel-slide" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
                 <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200" alt="Paisaje">
                 <div class="carousel-content">
@@ -71,6 +79,7 @@
                     <h2>Descubre los beneficios de tu tarjeta de crédito</h2>
                 </div>
             </div>
+
             <div class="carousel-slide" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
                 <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200" alt="Cielo">
                 <div class="carousel-content">
@@ -92,6 +101,7 @@
         </div>
     </div>
 
-    <script src="../js/login.js"></script>
+    <!-- JS -->
+    <script src="{% static 'js/login.js' %}"></script>
 </body>
 </html>

@@ -3,19 +3,23 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tu Bolsillo</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{% static 'img/favicon-32x32.png' %}" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="{% static 'img/favicon-32x32.png' %}"
+    />
 
-    <!-- CSS -->
+    <!-- CSS principal -->
     <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
 
   <body>
+    <!-- Encabezado -->
     <header class="hero">
       <nav class="nav container">
         <div class="nav_logo">
@@ -24,14 +28,13 @@
 
         <ul class="nav_link nav_link--menu">
           <li class="nav_items">
-            <!-- plantilla login -->
             <a href="{% url 'login' %}" class="nav_link">Regístrate</a>
           </li>
           <li class="nav_items">
-            <a href="#" class="nav_link">Acerca de</a>
+            <a href="#about" class="nav_link">Acerca de</a>
           </li>
           <li class="nav_items">
-            <a href="#" class="nav_link">Contacto</a>
+            <a href="#contacto" class="nav_link">Contacto</a>
           </li>
         </ul>
 
@@ -45,21 +48,18 @@
           Aprende a ordenar tus finanzas de la mejor manera
         </h1>
         <p class="hero_paragraph">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
-          cumque nemo qui? Modi dignissimos consectetur sequi cupiditate,
-          aliquam laborum eveniet doloribus. Rem, culpa? Veritatis beatae
-          accusamus, velit excepturi quam eius.
+          Organiza tus gastos, controla tus ingresos y toma mejores decisiones financieras con nuestra plataforma.
         </p>
-        <a href="#" class="cta">Comienza ahora</a>
+        <a href="{% url 'login' %}" class="cta">Comienza ahora</a>
       </section>
     </header>
 
+    <!-- Sección "Acerca de" -->
     <main>
-      <!-- SECCIÓN BENEFICIOS -->
-      <section class="container about">
+      <section id="about" class="container about">
         <h2 class="subtitle">¿Qué beneficios ofrecemos?</h2>
         <p class="about__paragraph">
-          Ofrecemos servicios financieros diseñados para tu comodidad, garantizando la seguridad y privacidad de tus datos.
+          Ofrecemos herramientas financieras para tu comodidad, garantizando seguridad, confidencialidad y análisis automatizado de tus datos.
         </p>
 
         <div class="about__main">
@@ -67,216 +67,141 @@
             <img src="{% static 'img/cog.png' %}" class="about__icon" alt="Seguridad" />
             <h3 class="about__title">Seguridad</h3>
             <p class="about__paragrah">
-              Protegemos tus datos con cifrado y protocolos de alta seguridad.
+              Tus datos están protegidos con los más altos estándares de seguridad digital.
             </p>
           </article>
 
           <article class="about__icons">
-            <img src="{% static 'img/paint.svg' %}" class="about__icon" alt="Confidencialidad" />
+            <img src="{% static 'img/cog.png' %}" class="about__icon" alt="Confidencialidad" />
             <h3 class="about__title">Confidencialidad</h3>
             <p class="about__paragrah">
-              Solo tú puedes acceder a tu información; la privacidad es nuestra prioridad.
+              Solo tú tienes acceso a tu información financiera. Nunca compartimos tus datos.
             </p>
           </article>
 
           <article class="about__icons">
-            <img src="{% static 'img/code.svg' %}" class="about__icon" alt="Automatización" />
+            <img src="{% static 'img/cog.png' %}" class="about__icon" alt="Automatización" />
             <h3 class="about__title">Automatización</h3>
             <p class="about__paragrah">
-              Nuestro sistema analiza tus gastos y genera reportes automáticamente.
+              Analizamos tus movimientos y te entregamos recomendaciones automáticas para mejorar tus finanzas.
             </p>
           </article>
         </div>
       </section>
 
-      <!-- SECCIÓN CONOCIMIENTO -->
+      <!-- Sección de Conocimiento -->
       <section class="knowledge">
         <div class="knowledge__container container">
           <div class="knowledege__texts">
-            <h2 class="subtitle">
-              Aprende a manejar tus finanzas de forma práctica y eficiente
-            </h2>
+            <h2 class="subtitle">Aprende a interpretar y controlar tus gastos</h2>
             <p class="knowledge__paragraph">
-              Organiza tus ingresos y gastos, visualiza tus metas y toma decisiones financieras más inteligentes.
+              Descubre cómo pequeñas decisiones financieras pueden mejorar significativamente tu bienestar económico.
             </p>
-            <a href="#" class="cta">Descubre más</a>
+            <a href="{% url 'login' %}" class="cta">Empieza ahora</a>
           </div>
 
           <figure class="knowledge__picture">
-            <img src="{% static 'img/macbook.png' %}" class="knowledge__img" alt="Dashboard financiero" />
+            <img
+              src="{% static 'img/macbook.png' %}"
+              class="knowledge__img"
+              alt="Dashboard financiero"
+            />
           </figure>
         </div>
       </section>
 
-      <!-- SECCIÓN PLANES -->
+      <!-- Sección de Precios -->
       <section class="price container">
-        <h2 class="subtitle">Obtén el plan perfecto para ti</h2>
+        <h2 class="subtitle">Elige el plan que mejor se adapte a ti</h2>
 
         <div class="price__table">
           <div class="price__element">
-            <p class="price__name">Básico</p>
-            <h3 class="price__price">Gratis</h3>
+            <p class="price__name">Gratis</p>
+            <h3 class="price__price">$0</h3>
             <div class="price__items">
-              <p class="price__features">Control de gastos</p>
-              <p class="price__features">Reportes simples</p>
-              <p class="price__features">Acceso limitado</p>
+              <p class="price__features">Control básico de gastos</p>
+              <p class="price__features">Panel mensual</p>
+              <p class="price__features">Soporte por correo</p>
             </div>
-            <a href="#" class="price__cta">Empieza ahora</a>
+            <a href="{% url 'login' %}" class="price__cta">Empieza ahora</a>
           </div>
 
           <div class="price__element price__element--best">
-            <p class="price__name">Avanzado</p>
-            <h3 class="price__price">$30.000</h3>
+            <p class="price__name">Pro</p>
+            <h3 class="price__price">$29.990</h3>
             <div class="price__items">
-              <p class="price__features">Gráficos interactivos</p>
-              <p class="price__features">Comparación mensual</p>
-              <p class="price__features">Soporte prioritario</p>
+              <p class="price__features">Análisis avanzado</p>
+              <p class="price__features">Comparativas mensuales</p>
+              <p class="price__features">Alertas inteligentes</p>
             </div>
-            <a href="#" class="price__cta">Seleccionar</a>
+            <a href="{% url 'login' %}" class="price__cta">Empieza ahora</a>
           </div>
 
           <div class="price__element">
             <p class="price__name">Premium</p>
-            <h3 class="price__price">$50.000</h3>
+            <h3 class="price__price">$49.990</h3>
             <div class="price__items">
-              <p class="price__features">Dashboard completo</p>
-              <p class="price__features">Asesor financiero</p>
-              <p class="price__features">Análisis predictivo</p>
+              <p class="price__features">Asesor financiero virtual</p>
+              <p class="price__features">Reportes personalizados</p>
+              <p class="price__features">Soporte prioritario</p>
             </div>
-            <a href="#" class="price__cta">Empieza ahora</a>
+            <a href="{% url 'login' %}" class="price__cta">Empieza ahora</a>
           </div>
         </div>
       </section>
 
-      <!-- SECCIÓN TESTIMONIOS -->
+      <!-- Testimonios -->
       <section class="testimony">
         <div class="testimony__container container">
-          <img src="{% static 'img/leftarrow.svg' %}" class="testimony__arrow" id="before" alt="Anterior" />
+          <img src="{% static 'img/leftarrow.svg' %}" class="testimony__arrow" id="before" />
 
           <section class="testimony__body testimony__body--show" data-id="1">
             <div class="testimony__texts">
               <h2 class="subtitle">
-                Jordan Alexander,
-                <span class="testimony__course">Usuario</span>
+                Karen Arteaga <span class="testimony__course">Usuaria</span>
               </h2>
               <p class="testimony__review">
-                “Tu Bolsillo me ayudó a tener claridad financiera y reducir mis gastos innecesarios.”
-              </p>
-            </div>
-
-            <figure class="testimony__picture">
-              <img src="{% static 'img/face.jpg' %}" class="testimony__img" alt="Testimonio 1" />
-            </figure>
-          </section>
-
-          <section class="testimony__body" data-id="2">
-            <div class="testimony__texts">
-              <h2 class="subtitle">
-                Alejandra Pérez,
-                <span class="testimony__course">Emprendedora</span>
-              </h2>
-              <p class="testimony__review">
-                “Gracias a Tu Bolsillo tengo control total de mis ingresos y gastos de negocio.”
+                “Tu Bolsillo me ayudó a entender mis gastos y ahorrar cada mes.”
               </p>
             </div>
             <figure class="testimony__picture">
-              <img src="{% static 'img/face2.jpg' %}" class="testimony__img" alt="Testimonio 2" />
+              <img src="{% static 'img/face3.jpg' %}" class="testimony__img" />
             </figure>
           </section>
 
-          <section class="testimony__body" data-id="3">
-            <div class="testimony__texts">
-              <h2 class="subtitle">
-                Karen Arteaga,
-                <span class="testimony__course">Usuaria</span>
-              </h2>
-              <p class="testimony__review">
-                “Una app intuitiva y clara. En minutos entendí en qué gasto más y cómo mejorar.”
-              </p>
+          <img src="{% static 'img/rightarrow.svg' %}" class="testimony__arrow" id="next" />
+        </div>
+      </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="footer">
+      <section class="footer__container container">
+        <h2 class="footer__title">Tu Bolsillo</h2>
+        <div class="footer__newsletter">
+          <p>Recibe tips financieros y noticias</p>
+          <form class="footer__form">
+            <div class="footer__inputs">
+              <input type="email" placeholder="Tu correo" class="footer__input" />
+              <input type="submit" value="Suscribirme" class="footer__submit" />
             </div>
-            <figure class="testimony__picture">
-              <img src="{% static 'img/face3.jpg' %}" class="testimony__img" alt="Testimonio 3" />
-            </figure>
-          </section>
-
-          <section class="testimony__body" data-id="4">
-            <div class="testimony__texts">
-              <h2 class="subtitle">
-                Kevin Ramírez,
-                <span class="testimony__course">Usuario</span>
-              </h2>
-              <p class="testimony__review">
-                “Me encanta ver mi evolución mensual en gráficos fáciles de entender.”
-              </p>
-            </div>
-            <figure class="testimony__picture">
-              <img src="{% static 'img/face4.jpg' %}" class="testimony__img" alt="Testimonio 4" />
-            </figure>
-          </section>
-
-          <img src="{% static 'img/rightarrow.svg' %}" class="testimony__arrow" id="next" alt="Siguiente" />
+          </form>
         </div>
       </section>
 
-      <!-- SECCIÓN PREGUNTAS -->
-      <section class="questions container">
-        <h2 class="subtitle">Preguntas frecuentes</h2>
-        <p class="questions__paragraph">
-          Resolvemos las dudas más comunes sobre el uso de Tu Bolsillo y cómo aprovecharlo al máximo.
-        </p>
-
-        <section class="questions__container">
-          <article class="questions__padding">
-            <div class="questions__answer">
-              <h3 class="questions__title">
-                ¿Qué es Tu Bolsillo?
-                <span class="questions__arrow">
-                  <img src="{% static 'img/arrow.svg' %}" class="questions__img" alt="Abrir respuesta" />
-                </span>
-              </h3>
-              <p class="questions__show">
-                Es una app web que te permite registrar, analizar y visualizar tus finanzas personales de forma práctica.
-              </p>
-            </div>
-          </article>
-
-          <article class="questions__padding">
-            <div class="questions__answer">
-              <h3 class="questions__title">
-                ¿Necesito conocimientos financieros?
-                <span class="questions__arrow">
-                  <img src="{% static 'img/arrow.svg' %}" class="questions__img" alt="Abrir respuesta" />
-                </span>
-              </h3>
-              <p class="questions__show">
-                No. La app está diseñada para cualquier usuario, con explicaciones simples e intuitivas.
-              </p>
-            </div>
-          </article>
-
-          <article class="questions__padding">
-            <div class="questions__answer">
-              <h3 class="questions__title">
-                ¿Cómo se protegen mis datos?
-                <span class="questions__arrow">
-                  <img src="{% static 'img/arrow.svg' %}" class="questions__img" alt="Abrir respuesta" />
-                </span>
-              </h3>
-              <p class="questions__show">
-                Usamos cifrado SSL y almacenamiento seguro en servidores auditados.
-              </p>
-            </div>
-          </article>
-        </section>
-
-        <section class="questions__offer">
-          <h2 class="subtitle">¿Listo para empezar?</h2>
-          <p class="questions__copy">
-            Regístrate y descubre el poder de tener tus finanzas en orden con Tu Bolsillo.
-          </p>
-          <a href="{% url 'login' %}" class="cta">Comienza ahora</a>
-        </section>
+      <section class="footer__copy container">
+        <div class="footer__social">
+          <a href="#"><img src="{% static 'img/facebook.svg' %}" class="footer__img" /></a>
+          <a href="#"><img src="{% static 'img/twitter.svg' %}" class="footer__img" /></a>
+          <a href="#"><img src="{% static 'img/instagram.svg' %}" class="footer__img" /></a>
+        </div>
+        <h3 class="footer__copyright">
+          © 2025 Tu Bolsillo - Todos los derechos reservados
+        </h3>
       </section>
-    </main>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{% static 'js/menu.js' %}"></script>
   </body>
 </html>
