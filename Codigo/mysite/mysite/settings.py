@@ -1,9 +1,17 @@
-from pathlib import Path
+import logging
 import os
+from pathlib import Path
+from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv
 
 # --- BASE DIR ---
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+dotenv_path = BASE_DIR / ".env"
+load_dotenv(dotenv_path)
+
+print("✅ Archivo .env cargado desde:", dotenv_path)
+print("🔗 DATABASE_URL detectado:", os.getenv("DATABASE_URL"))
 
 # --- SEGURIDAD ---
 SECRET_KEY = 'django-insecure-x_^%@zssl7i#8sp$2e^j$_ydw^#x)&p(0ydcj&$1mr)r1)w*i_'
@@ -74,11 +82,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # --- BASE DE DATOS ---
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
-
 
 # --- VALIDACIÓN DE CONTRASEÑAS ---
 AUTH_PASSWORD_VALIDATORS = [
