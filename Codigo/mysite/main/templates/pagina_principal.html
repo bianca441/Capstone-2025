@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tu Bolsillo - Inicio</title>
-    <link rel="stylesheet" href="../css/pagina_principal.css">
+    <link rel="stylesheet" href="{% static 'css/pagina_principal.css' %}">
 </head>
 <body>
     <!-- Sidebar -->
@@ -58,7 +59,7 @@
         </nav>
 
         <div class="sidebar-footer">
-            <a href="../Capstone-2025/Codigo/mysite/main/templates/index.html" class="logout-btn">
+            <a href="{% static 'Capstone-2025/Codigo/mysite/main/templates/index.html' %}" class="logout-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                     <polyline points="16 17 21 12 16 7"/>
@@ -176,8 +177,6 @@
             </div>
         </div>
     </main>
-
-    <script src="../js/pagina_principal.js"></script>
-
-</body>
+    <script src="{% static 'js/pagina_principal.js' %}"></script>
+</body> 
 </html>

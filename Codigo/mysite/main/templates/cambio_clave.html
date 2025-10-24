@@ -1,14 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cambio de Contraseña</title>
-    <link rel="stylesheet" href="../css/cambio_clave.css">
+    <link rel="stylesheet" href="{% static 'css/cambio_clave.css' %}">
 </head>
 <body>
     <div class="left-section">
-        <a href="../templates/login.html" class="back-link">IR A SITIO PÚBLICO</a>
+        <a href="{% static 'templates/login.html' %}" class="back-link">IR A SITIO PÚBLICO</a>
         
         <div class="header">
             <div class="logo-container">
@@ -117,6 +118,6 @@
         </div>
     </div>
 
-    <script src="../js/cambio_clave.js"></script>
+    <script src="{% static 'js/cambio_clave.js' %}"></script>
 </body>
 </html>
