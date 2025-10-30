@@ -1,12 +1,12 @@
-import logging
 import os
 from pathlib import Path
-from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
+from django.core.exceptions import ImproperlyConfigured
 
 # --- BASE DIR ---
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# --- CARGAR VARIABLES DE ENTORNO ---
 dotenv_path = BASE_DIR / ".env"
 load_dotenv(dotenv_path)
 
@@ -16,7 +16,7 @@ print("🔗 DATABASE_URL detectado:", os.getenv("DATABASE_URL"))
 # --- SEGURIDAD ---
 SECRET_KEY = 'django-insecure-x_^%@zssl7i#8sp$2e^j$_ydw^#x)&p(0ydcj&$1mr)r1)w*i_'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []  # Puedes agregar dominios o IPs en despliegue
 
 
 # --- APLICACIONES INSTALADAS ---
@@ -57,10 +57,9 @@ TEMPLATES = [
 
         # Rutas donde Django buscará plantillas HTML
         'DIRS': [
-            BASE_DIR / 'main' / 'templates',  # ✅ ruta central de tus HTML
+            BASE_DIR / 'main' / 'templates',  # ✅ carpeta principal de tus HTML
         ],
 
-        # También buscará dentro de cada app registrada (app_name/templates)
         'APP_DIRS': True,
 
         'OPTIONS': {
@@ -79,7 +78,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
-# --- BASE DE DATOS ---
+# --- BASE DE DATOS (SUPABASE) ---
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -90,6 +89,7 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT'),
     }
 }
+
 
 # --- VALIDACIÓN DE CONTRASEÑAS ---
 AUTH_PASSWORD_VALIDATORS = [
@@ -126,3 +126,28 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # --- CONFIGURACIÓN DE CLAVE POR DEFECTO ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# --- SESIONES Y LOGIN ---
+LOGIN_REDIRECT_URL = 'pagina_principal'   # Redirección tras iniciar sesión
+LOGOUT_REDIRECT_URL = 'login'             # Redirección tras cerrar sesión
+LOGIN_URL = 'login'                       # Vista de login por defecto
+
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
+
+# --- LOGGING OPCIONAL (para depurar base o errores de conexión) ---
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}

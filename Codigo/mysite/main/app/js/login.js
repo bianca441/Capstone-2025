@@ -1,45 +1,47 @@
-// Variables globales
+// ===========================
+// 🎠 CONTROL DE CARRUSEL LOGIN
+// ===========================
+
 let currentSlide = 0;
 let autoplayInterval;
 let isPlaying = true;
 
-// Función para mostrar un slide específico
+// Mostrar un slide específico
 function showSlide(n) {
     const slides = document.querySelectorAll('.carousel-slide');
     const indicators = document.querySelectorAll('.indicator');
-    
-    // Remover clase active de todos los slides e indicadores
+
+    if (slides.length === 0) return;
+
     slides.forEach(slide => slide.classList.remove('active'));
     indicators.forEach(indicator => indicator.classList.remove('active'));
-    
-    // Manejar el ciclo del carousel
+
     if (n >= slides.length) currentSlide = 0;
     if (n < 0) currentSlide = slides.length - 1;
-    
-    // Activar el slide e indicador actual
+
     slides[currentSlide].classList.add('active');
     indicators[currentSlide].classList.add('active');
 }
 
-// Función para ir al siguiente slide
+// Ir al siguiente slide
 function nextSlide() {
     currentSlide++;
     showSlide(currentSlide);
 }
 
-// Función para ir al slide anterior
+// Ir al slide anterior
 function prevSlide() {
     currentSlide--;
     showSlide(currentSlide);
 }
 
-// Función para ir a un slide específico
+// Ir a un slide específico (por los indicadores)
 function goToSlide(n) {
     currentSlide = n;
     showSlide(currentSlide);
 }
 
-// Función para activar/desactivar el autoplay
+// Activar o pausar el autoplay
 function toggleAutoplay() {
     const pauseBtn = document.querySelector('.pause-btn');
     if (isPlaying) {
@@ -53,32 +55,40 @@ function toggleAutoplay() {
     }
 }
 
-// Función para iniciar el autoplay
+// Iniciar autoplay
 function startAutoplay() {
     autoplayInterval = setInterval(() => {
         nextSlide();
     }, 5000);
 }
 
-// Función para mostrar/ocultar contraseña
+// ===========================
+// 👁️ MOSTRAR / OCULTAR CONTRASEÑA
+// ===========================
 function togglePassword() {
     const passwordInput = document.getElementById('password');
-    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    if (passwordInput) {
+        passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    }
 }
 
-// Event listener para el formulario de login
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    
-    // Aquí puedes agregar la lógica de validación y envío
-    console.log('Email:', email);
-    console.log('Password:', password);
-    
-    alert('Formulario enviado (demo)');
-});
+// ===========================
+// 🚀 FORMULARIO DE LOGIN (Django real)
+// ===========================
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function() {
+            const username = document.getElementById('username')?.value || "(sin usuario)";
+            const password = document.getElementById('password')?.value ? "********" : "(vacía)";
 
-// Iniciar el autoplay cuando carga la página
-startAutoplay();
+            console.log("📨 Enviando formulario de login a Django...");
+            console.log("Usuario:", username);
+            console.log("Contraseña:", password);
+            // ⚠️ No usamos preventDefault para permitir POST real al backend
+        });
+    }
+
+    // Inicia el autoplay del carrusel
+    startAutoplay();
+});

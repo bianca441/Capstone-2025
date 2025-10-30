@@ -4,9 +4,9 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('login/', views.login_view, name='login'),
+    path('register/', views.register_view, name='register'),
     path('cambio-clave/', views.cambio_clave, name='cambio_clave'),
     path('principal/', views.pagina_principal, name='pagina_principal'),
-
-    # ✅ Nueva ruta para el registro
-    path('register/', views.register_view, name='register'),
+    path('logout/', views.logout_view, name='logout'),
+   
 ]

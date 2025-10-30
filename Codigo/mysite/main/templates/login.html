@@ -28,10 +28,22 @@
         <div class="login-container">
             <h1>Bienvenido a nuestros servicios</h1>
 
-            <form id="loginForm">
+            <!-- ✅ MENSAJES DINÁMICOS -->
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <!-- ✅ FORMULARIO REAL DE LOGIN -->
+            <form id="loginForm" method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                
                 <div class="form-group">
-                    <label for="mail">Correo Electrónico</label>
-                    <input type="text" id="mail" name="mail" required>
+                    <label for="username">Usuario o Correo Electrónico</label>
+                    <input type="text" id="username" name="username" placeholder="Ej: javier.solar" required>
                 </div>
 
                 <div class="form-group">
@@ -45,8 +57,7 @@
                     </span>
                 </div>
 
-                <!-- Botón de ingreso -->
-                <a href="{% url 'pagina_principal' %}" class="login-btn">INGRESAR</a>
+                <button type="submit" class="login-btn">INGRESAR</button>
 
                 <div class="help-link">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
@@ -57,11 +68,11 @@
                     ¿Problemas con tu clave? 
                     <a href="{% url 'cambio_clave' %}">Recupérala</a>
                 </div>
-            </form>
+            </form> <!-- 🔥 cierre correcto del form -->
         </div>
     </div>
 
-    <!-- Sección derecha -->
+    <!-- Sección derecha (decorativa) -->
     <div class="right-section">
         <div class="carousel">
             <div class="carousel-slide active" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
@@ -101,7 +112,7 @@
         </div>
     </div>
 
-    <!-- JS -->
+    <!-- ✅ Scripts -->
     <script src="{% static 'js/login.js' %}"></script>
 </body>
 </html>
