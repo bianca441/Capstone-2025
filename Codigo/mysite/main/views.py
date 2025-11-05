@@ -3,6 +3,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
+from django.core.files.storage import FileSystemStorage
+import os
+
 
 
 # --- PÁGINAS BASE ---
@@ -92,3 +95,24 @@ def logout_view(request):
         # Si el usuario no estaba logueado, también lo mandamos al index
         messages.warning(request, "⚠️ No tienes una sesión activa.")
         return redirect('index')
+    
+
+    
+def subir_cartola(request):
+    if request.method == "POST" and request.FILES.get("archivo_excel"):
+        archivo = request.FILES["archivo_excel"]
+
+        # Validar extensión
+        if not archivo.name.endswith(".xlsx") and not archivo.name.endswith(".xls"):
+            messages.error(request, "Solo se permiten archivos Excel (.xlsx o .xls).")
+            return redirect("subir_cartola")
+
+        # Guardar el archivo en la carpeta /media/cartolas
+        fs = FileSystemStorage(location=os.path.join("media", "cartolas"))
+        filename = fs.save(archivo.name, archivo)
+        file_url = fs.url(filename)
+
+        messages.success(request, f"Archivo '{archivo.name}' subido correctamente.")
+        return redirect("subir_cartola")
+
+    return render(request, "subir_cartola.html")

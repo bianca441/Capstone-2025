@@ -8,5 +8,6 @@ urlpatterns = [
     path('cambio-clave/', views.cambio_clave, name='cambio_clave'),
     path('principal/', views.pagina_principal, name='pagina_principal'),
     path('logout/', views.logout_view, name='logout'),
+        path('subir-cartola/', views.subir_cartola, name='subir_cartola'), 
    
 ]

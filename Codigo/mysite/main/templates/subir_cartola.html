@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargar Cartola Bancaria</title>
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'css/formulario.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Subir Cartola Bancaria</h1>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="archivo_excel">Selecciona tu archivo Excel:</label>
+                <input type="file" name="archivo_excel" id="archivo_excel" accept=".xlsx,.xls" required>
+            </div>
+            <button type="submit" class="btn">Subir archivo</button>
+        </form>
+
+        <a href="{% url 'pagina_principal' %}" class="volver">⬅ Volver al Panel</a>
+    </div>
+</body>
+</html>
