@@ -5,7 +5,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.core.files.storage import FileSystemStorage
 import os
-
+import pandas as pd
+from .models import Movimiento
+from datetime import datetime
 
 
 # --- PÁGINAS BASE ---
@@ -107,12 +109,47 @@ def subir_cartola(request):
             messages.error(request, "Solo se permiten archivos Excel (.xlsx o .xls).")
             return redirect("subir_cartola")
 
-        # Guardar el archivo en la carpeta /media/cartolas
+        # Guardar archivo temporalmente
         fs = FileSystemStorage(location=os.path.join("media", "cartolas"))
         filename = fs.save(archivo.name, archivo)
-        file_url = fs.url(filename)
+        ruta_archivo = fs.path(filename)
 
-        messages.success(request, f"Archivo '{archivo.name}' subido correctamente.")
+        try:
+            # Leer el Excel
+            df = pd.read_excel(ruta_archivo)
+
+            # Columnas requeridas
+            columnas_requeridas = ['Fecha', 'Descripcion', 'Cargos', 'Abonos', 'Saldo']
+            if not all(col in df.columns for col in columnas_requeridas):
+                messages.error(request, "El archivo debe contener las columnas: Fecha, Descripcion, Cargos, Abonos, Saldo.")
+                return redirect("subir_cartola")
+
+            # Procesar y guardar
+            for _, fila in df.iterrows():
+                try:
+                    fecha = pd.to_datetime(fila['Fecha']).date()
+                except Exception:
+                    continue  # si no puede convertir la fecha, pasa a la siguiente fila
+
+                descripcion = str(fila['Descripcion'])
+                cargo = float(fila['Cargos']) if not pd.isna(fila['Cargos']) else 0
+                abono = float(fila['Abonos']) if not pd.isna(fila['Abonos']) else 0
+                saldo = float(fila['Saldo']) if not pd.isna(fila['Saldo']) else None
+
+                Movimiento.objects.create(
+                    usuario=request.user,
+                    fecha=fecha,
+                    descripcion=descripcion,
+                    cargo=cargo,
+                    abono=abono,
+                    saldo=saldo,
+                    archivo_origen=archivo.name
+                )
+
+            messages.success(request, f"Archivo '{archivo.name}' cargado correctamente y {len(df)} movimientos procesados.")
+        except Exception as e:
+            messages.error(request, f"Error al procesar el archivo: {str(e)}")
+
         return redirect("subir_cartola")
 
     return render(request, "subir_cartola.html")
