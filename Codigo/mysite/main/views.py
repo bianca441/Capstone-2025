@@ -8,6 +8,7 @@ import os
 import pandas as pd
 from .models import Movimiento
 from datetime import datetime
+from .models import Movimiento
 
 
 # --- PÁGINAS BASE ---
@@ -105,50 +106,65 @@ def subir_cartola(request):
         archivo = request.FILES["archivo_excel"]
 
         # Validar extensión
-        if not archivo.name.endswith(".xlsx") and not archivo.name.endswith(".xls"):
+        if not archivo.name.endswith((".xlsx", ".xls")):
             messages.error(request, "Solo se permiten archivos Excel (.xlsx o .xls).")
             return redirect("subir_cartola")
 
         # Guardar archivo temporalmente
-        fs = FileSystemStorage(location=os.path.join("media", "cartolas"))
+        carpeta_destino = os.path.join("media", "cartolas")
+        os.makedirs(carpeta_destino, exist_ok=True)
+        fs = FileSystemStorage(location=carpeta_destino)
         filename = fs.save(archivo.name, archivo)
         ruta_archivo = fs.path(filename)
 
         try:
-            # Leer el Excel
-            df = pd.read_excel(ruta_archivo)
+            # ✅ Detectar motor según extensión
+            if archivo.name.endswith(".xlsx"):
+                df = pd.read_excel(ruta_archivo, engine="openpyxl")
+            elif archivo.name.endswith(".xls"):
+                df = pd.read_excel(ruta_archivo, engine="xlrd")
+            else:
+                raise ValueError("Formato no soportado. Usa .xls o .xlsx")
 
-            # Columnas requeridas
+            # ✅ Validar columnas requeridas
             columnas_requeridas = ['Fecha', 'Descripcion', 'Cargos', 'Abonos', 'Saldo']
-            if not all(col in df.columns for col in columnas_requeridas):
-                messages.error(request, "El archivo debe contener las columnas: Fecha, Descripcion, Cargos, Abonos, Saldo.")
+            columnas_archivo = [col.strip().capitalize() for col in df.columns]
+
+            if not all(col in columnas_archivo for col in columnas_requeridas):
+                messages.error(
+                    request,
+                    f"El archivo debe contener las columnas: {', '.join(columnas_requeridas)}."
+                )
                 return redirect("subir_cartola")
 
-            # Procesar y guardar
+            # ✅ Procesar filas
+            registros_creados = 0
             for _, fila in df.iterrows():
                 try:
                     fecha = pd.to_datetime(fila['Fecha']).date()
-                except Exception:
-                    continue  # si no puede convertir la fecha, pasa a la siguiente fila
+                    descripcion = str(fila['Descripcion'])
+                    cargo = float(fila['Cargos']) if not pd.isna(fila['Cargos']) else 0
+                    abono = float(fila['Abonos']) if not pd.isna(fila['Abonos']) else 0
+                    saldo = float(fila['Saldo']) if not pd.isna(fila['Saldo']) else 0
 
-                descripcion = str(fila['Descripcion'])
-                cargo = float(fila['Cargos']) if not pd.isna(fila['Cargos']) else 0
-                abono = float(fila['Abonos']) if not pd.isna(fila['Abonos']) else 0
-                saldo = float(fila['Saldo']) if not pd.isna(fila['Saldo']) else None
+                    Movimiento.objects.create(
+                        usuario=request.user,
+                        fecha=fecha,
+                        descripcion=descripcion,
+                        cargo=cargo,
+                        abono=abono,
+                        saldo=saldo,
+                        archivo_origen=archivo.name
+                    )
+                    registros_creados += 1
+                except Exception as fila_error:
+                    print(f"⚠️ Error en fila: {fila_error}")
+                    continue
 
-                Movimiento.objects.create(
-                    usuario=request.user,
-                    fecha=fecha,
-                    descripcion=descripcion,
-                    cargo=cargo,
-                    abono=abono,
-                    saldo=saldo,
-                    archivo_origen=archivo.name
-                )
-
-            messages.success(request, f"Archivo '{archivo.name}' cargado correctamente y {len(df)} movimientos procesados.")
+            messages.success(request, f"Archivo '{archivo.name}' cargado correctamente. {registros_creados} movimientos registrados.")
         except Exception as e:
             messages.error(request, f"Error al procesar el archivo: {str(e)}")
+            print("❌ Error procesando Excel:", e)
 
         return redirect("subir_cartola")
 
