@@ -169,3 +169,6 @@ def subir_cartola(request):
         return redirect("subir_cartola")
 
     return render(request, "subir_cartola.html")
+
+def configuracion(request):
+    return render(request, 'configuracion.html')
