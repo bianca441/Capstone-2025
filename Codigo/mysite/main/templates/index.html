@@ -117,6 +117,110 @@
     <!-- (Resto de tu contenido se mantiene igual) -->
     <main>
       <!-- ... todas tus secciones: about, knowledge, price, testimonios ... -->
+      <section id="about" class="container about">
+        <h2 class="subtitle">¿Qué beneficios ofrecemos?</h2>
+        <p class="about__paragraph">
+          Ofrecemos herramientas financieras para tu comodidad, garantizando seguridad, confidencialidad y análisis automatizado de tus datos.
+        </p>
+
+        <div class="about__main">
+          <article class="about__icons">
+            <img src="{% static 'img/cog.png' %}" class="about__icon" alt="Seguridad" />
+            <h3 class="about__title">Seguridad</h3>
+            <p class="about__paragrah">
+              Tus datos están protegidos con los más altos estándares de seguridad digital.
+            </p>
+          </article>
+
+          <article class="about__icons">
+            <img src="{% static 'img/cog.png' %}" class="about__icon" alt="Confidencialidad" />
+            <h3 class="about__title">Confidencialidad</h3>
+            <p class="about__paragrah">
+              Solo tú tienes acceso a tu información financiera. Nunca compartimos tus datos.
+            </p>
+          </article>
+
+          <article class="about__icons">
+            <img src="{% static 'img/cog.png' %}" class="about__icon" alt="Automatización" />
+            <h3 class="about__title">Automatización</h3>
+            <p class="about__paragrah">
+              Analizamos tus movimientos y te entregamos recomendaciones automáticas para mejorar tus finanzas.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Sección de Conocimiento -->
+      <section class="knowledge">
+        <div class="knowledge__container container">
+          <div class="knowledege__texts">
+            <h2 class="subtitle">Aprende a interpretar y controlar tus gastos</h2>
+            <p class="knowledge__paragraph">
+              Descubre cómo pequeñas decisiones financieras pueden mejorar significativamente tu bienestar económico.
+            </p>
+            <a href="{% url 'login' %}" class="cta">Empieza ahora</a>
+          </div>
+
+          <figure class="knowledge__picture">
+            <img
+              src="{% static 'img/macbook.png' %}"
+              class="knowledge__img"
+              alt="Dashboard financiero"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <!-- Testimonios -->
+      <section class="testimony">
+        <div class="testimony__container container">
+          <img src="{% static 'img/leftarrow.svg' %}" class="testimony__arrow" id="before" />
+
+          <section class="testimony__body testimony__body--show" data-id="1">
+            <div class="testimony__texts">
+              <h2 class="subtitle">
+                Alejandra Morales <span class="testimony__course">Usuaria</span>
+              </h2>
+              <p class="testimony__review">
+                “Tu Bolsillo me ayudó a entender mis gastos y ahorrar cada mes.”
+              </p>
+            </div>
+            <figure class="testimony__picture">
+              <img src="{% static 'img/Alejandra.png' %}" class="testimony__img" />
+            </figure>
+          </section>
+
+          <section class="testimony__body testimony__body--show" data-id="2">
+            <div class="testimony__texts">
+              <h2 class="subtitle">
+                Kevin Paredes <span class="testimony__course">Usuario</span>
+              </h2>
+              <p class="testimony__review">
+                “Tu Bolsillo me ayudó a entender mis gastos y ahorrar cada mes.”
+              </p>
+            </div>
+            <figure class="testimony__picture">
+              <img src="{% static 'img/Kevin.png' %}" class="testimony__img" />
+            </figure>
+          </section>
+
+          <section class="testimony__body testimony__body--show" data-id="3">
+            <div class="testimony__texts">
+              <h2 class="subtitle">
+                Estefania y su esposo <span class="testimony__course">Usuaria</span>
+              </h2>
+              <p class="testimony__review">
+                “Tu Bolsillo nos ayudo a controlar nuestras finanzas, para tener un mejor futuro.”
+              </p>
+            </div>
+            <figure class="testimony__picture">
+              <img src="{% static 'img/Pareja.png' %}" class="testimony__img" />
+            </figure>
+          </section>
+
+          <img src="{% static 'img/rightarrow.svg' %}" class="testimony__arrow" id="next" />
+        </div>
+      </section>
     </main>
 
     <!-- Pie de página -->

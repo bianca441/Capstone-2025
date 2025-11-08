@@ -92,11 +92,11 @@ def logout_view(request):
         response['Expires'] = '0'
 
         # Mensaje de despedida
-        messages.info(request, f"👋 Hasta pronto, {username}. Tu sesión se cerró correctamente.")
+        messages.info(request, f" Hasta pronto, {username}. Tu sesión se cerró correctamente.")
         return response
     else:
         # Si el usuario no estaba logueado, también lo mandamos al index
-        messages.warning(request, "⚠️ No tienes una sesión activa.")
+        messages.warning(request, " No tienes una sesión activa.")
         return redirect('index')
     
 
@@ -118,7 +118,7 @@ def subir_cartola(request):
         ruta_archivo = fs.path(filename)
 
         try:
-            # ✅ Detectar motor según extensión
+            # Detectar motor según extensión
             if archivo.name.endswith(".xlsx"):
                 df = pd.read_excel(ruta_archivo, engine="openpyxl")
             elif archivo.name.endswith(".xls"):
@@ -126,7 +126,7 @@ def subir_cartola(request):
             else:
                 raise ValueError("Formato no soportado. Usa .xls o .xlsx")
 
-            # ✅ Validar columnas requeridas
+            # Validar columnas requeridas
             columnas_requeridas = ['Fecha', 'Descripcion', 'Cargos', 'Abonos', 'Saldo']
             columnas_archivo = [col.strip().capitalize() for col in df.columns]
 
@@ -137,7 +137,7 @@ def subir_cartola(request):
                 )
                 return redirect("subir_cartola")
 
-            # ✅ Procesar filas
+            #  Procesar filas
             registros_creados = 0
             for _, fila in df.iterrows():
                 try:
@@ -158,13 +158,13 @@ def subir_cartola(request):
                     )
                     registros_creados += 1
                 except Exception as fila_error:
-                    print(f"⚠️ Error en fila: {fila_error}")
+                    print(f" Error en fila: {fila_error}")
                     continue
 
             messages.success(request, f"Archivo '{archivo.name}' cargado correctamente. {registros_creados} movimientos registrados.")
         except Exception as e:
             messages.error(request, f"Error al procesar el archivo: {str(e)}")
-            print("❌ Error procesando Excel:", e)
+            print("Error procesando Excel:", e)
 
         return redirect("subir_cartola")
 
