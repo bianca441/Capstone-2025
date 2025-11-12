@@ -8,14 +8,14 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
     display: flex;
     height: 100vh;
-    background: #f0f2f5;
+    background: #ecfdf5;
     overflow: hidden;
 }
 
 /* Sidebar */
 .sidebar {
     width: 260px;
-    background: linear-gradient(180deg, #1e3a8a 0%, #1e40af 100%);
+    background: linear-gradient(180deg, #065f46 0%, #059669 100%);
     color: white;
     display: flex;
     flex-direction: column;
@@ -140,7 +140,7 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #2196F3;
+    background: #10b981;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -152,6 +152,52 @@ body {
     flex: 1;
     overflow-y: auto;
     padding: 30px 40px;
+}
+
+/* Date filters */
+.date-filters {
+    background: white;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.filters-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.date-filters label {
+    color: #065f46;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.date-filters input[type="date"],
+.date-filters input[type="text"] {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 8px 10px;
+}
+
+.date-filters .btn-apply {
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+.date-filters .btn-clear {
+    color: #059669;
+    text-decoration: none;
+    padding: 8px 10px;
 }
 
 /* Welcome Section */
@@ -185,8 +231,43 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
+/* Tabla de movimientos */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.movements-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.movements-table th {
+    text-align: left;
+    font-weight: 600;
+    color: #065f46;
+    background: #d1fae5;
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.movements-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.monto-positivo {
+    color: #10b981;
+    font-weight: 600;
+}
+
+.monto-negativo {
+    color: #ef4444;
+    font-weight: 600;
+}
+
 .card-balance {
-    background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+    background: linear-gradient(135deg, #047857 0%, #10b981 100%);
     color: white;
 }
 
@@ -356,3 +437,8 @@ body {
         height: 400px;
     }
 }
+/* Movements table refinements */
+.movements-table th.num, .movements-table td.num { text-align: right; }
+.movements-table td.desc { max-width: 520px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.movements-table tbody tr:nth-child(even) { background: #f9fafb; }
+.movements-table tbody tr:hover { background: #f3f4f6; }

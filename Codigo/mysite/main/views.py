@@ -7,8 +7,9 @@ from django.core.files.storage import FileSystemStorage
 import os
 import pandas as pd
 from .models import Movimiento
-from datetime import datetime
-from .models import Movimiento
+from datetime import datetime, date, timedelta
+from django.db.models import Sum
+import json
 
 
 # --- PÁGINAS BASE ---
@@ -21,7 +22,83 @@ def cambio_clave(request):
 def pagina_principal(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    return render(request, 'pagina_principal.html', {'usuario': request.user})
+
+    hoy = date.today()
+    # Rango seleccionado por el usuario (GET), por defecto mes actual
+    inicio_str = request.GET.get('inicio')
+    fin_str = request.GET.get('fin')
+    try:
+        inicio = datetime.strptime(inicio_str, '%Y-%m-%d').date() if inicio_str else hoy.replace(day=1)
+    except Exception:
+        inicio = hoy.replace(day=1)
+    try:
+        fin = datetime.strptime(fin_str, '%Y-%m-%d').date() if fin_str else hoy
+    except Exception:
+        fin = hoy
+    if fin < inicio:
+        inicio, fin = fin, inicio
+
+    movimientos_usuario = Movimiento.objects.filter(usuario=request.user)
+
+    # Totales del mes
+    movimientos_rango = movimientos_usuario.filter(fecha__gte=inicio, fecha__lte=fin)
+    total_abonos_mes = movimientos_rango.aggregate(total=Sum('abono'))['total'] or 0
+    total_cargos_mes = movimientos_rango.aggregate(total=Sum('cargo'))['total'] or 0
+
+    # Saldo actual (último registro por fecha e id)
+    ultimo_mov = movimientos_usuario.order_by('-fecha', '-id').first()
+    saldo_actual = ultimo_mov.saldo if ultimo_mov and ultimo_mov.saldo is not None else 0
+
+    # Últimos movimientos
+    ultimos_movimientos = movimientos_usuario.order_by('-fecha', '-id')[:10]
+
+    # Agregados diarios del mes (ingresos/abonos y gastos/cargos)
+    agregados = (
+        movimientos_rango
+        .values('fecha')
+        .order_by('fecha')
+        .annotate(abonos=Sum('abono'), cargos=Sum('cargo'))
+    )
+
+    # Generar eje de fechas desde inicio de mes a hoy
+    fechas = []
+    cur = inicio
+    while cur <= fin:
+        fechas.append(cur)
+        cur += timedelta(days=1)
+
+    mapa_abonos = {a['fecha']: (a['abonos'] or 0) for a in agregados}
+    mapa_cargos = {a['fecha']: (a['cargos'] or 0) for a in agregados}
+
+    labels = [f.strftime('%Y-%m-%d') for f in fechas]
+    serie_abonos = [float(mapa_abonos.get(f, 0)) for f in fechas]
+    serie_cargos = [float(mapa_cargos.get(f, 0)) for f in fechas]
+
+    # Saldo acumulado diario: parte del último saldo antes del inicio de mes
+    previo = movimientos_usuario.filter(fecha__lt=inicio).order_by('-fecha', '-id').first()
+    saldo_inicio = float(previo.saldo) if previo and previo.saldo is not None else 0.0
+    acumulado = saldo_inicio
+    serie_saldo = []
+    for f in fechas:
+        acumulado += float(mapa_abonos.get(f, 0) or 0) - float(mapa_cargos.get(f, 0) or 0)
+        serie_saldo.append(acumulado)
+
+    contexto = {
+        'usuario': request.user,
+        'saldo_actual': saldo_actual,
+        'total_abonos_mes': total_abonos_mes,
+        'total_cargos_mes': total_cargos_mes,
+        'ultimos_movimientos': ultimos_movimientos,
+        'hoy': fin,
+        'inicio': inicio,
+        'fin': fin,
+        # Datos para gráficos en JSON
+        'chart_labels_json': json.dumps(labels),
+        'chart_abonos_json': json.dumps(serie_abonos),
+        'chart_cargos_json': json.dumps(serie_cargos),
+        'chart_saldo_json': json.dumps(serie_saldo),
+    }
+    return render(request, 'pagina_principal.html', contexto)
 
 
 # --- LOGIN REAL ---

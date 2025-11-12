@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     # Aplicación principal
     'main',
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -105,6 +107,7 @@ LANGUAGE_CODE = 'es-cl'                # idioma español (Chile)
 TIME_ZONE = 'America/Santiago'         # zona horaria de Chile
 USE_I18N = True
 USE_TZ = True
+USE_THOUSAND_SEPARATOR = True
 
 
 # --- ARCHIVOS ESTÁTICOS (CSS, JS, IMÁGENES) ---
