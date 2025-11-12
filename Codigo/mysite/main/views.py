@@ -172,3 +172,5 @@ def subir_cartola(request):
 
 def configuracion(request):
     return render(request, 'configuracion.html')
+
+
