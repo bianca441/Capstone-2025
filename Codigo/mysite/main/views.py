@@ -10,7 +10,9 @@ from .models import Movimiento
 from datetime import datetime, date, timedelta
 from django.db.models import Sum
 import json
-
+from django.contrib.auth.decorators import login_required
+from .forms import PerfilForm, UserForm
+from .models import Perfil
 
 # --- PÁGINAS BASE ---
 def index(request):
@@ -247,7 +249,27 @@ def subir_cartola(request):
 
     return render(request, "subir_cartola.html")
 
+@login_required
 def configuracion(request):
+    perfil, created = Perfil.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        perfil_form = PerfilForm(request.POST, request.FILES, instance=perfil)
+
+        if user_form.is_valid() and perfil_form.is_valid():
+            user_form.save()
+            perfil_form.save()
+            return redirect('configuracion')
+    else:
+        user_form = UserForm(instance=request.user)
+        perfil_form = PerfilForm(instance=perfil)
+
+    return render(request, 'configuracion.html', {
+        'user_form': user_form,
+        'perfil_form': perfil_form,
+    })
+
     return render(request, 'configuracion.html')
 
 

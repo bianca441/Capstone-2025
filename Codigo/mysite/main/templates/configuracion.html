@@ -1,461 +1,613 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Configuración - Mi Bolsillo</title>
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon-32x32.png' %}" />
-    <link rel="stylesheet" href="{% static 'css/configuracion.css' %}">
-     <style>
-        /* --- Modal de confirmación --- */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            align-items: center; justify-content: center;
-        }
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="{% static 'img/favicon-32x32.png' %}"
+    />
+    <link rel="stylesheet" href="{% static 'css/configuracion.css' %}" />
+    <style>
+      /* --- Modal de confirmación --- */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+      }
 
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
+      .modal-content {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      }
 
-        .modal-content h2 {
-            color: #1e293b;
-            margin-bottom: 1rem;
-        }
+      .modal-content h2 {
+        color: #1e293b;
+        margin-bottom: 1rem;
+      }
 
-        .modal-content p {
-            color: #475569;
-            margin-bottom: 1.5rem;
-        }
+      .modal-content p {
+        color: #475569;
+        margin-bottom: 1.5rem;
+      }
 
-        .modal-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
+      .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
 
-        .btn-confirm, .btn-cancel {
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            cursor: pointer;
-            border: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
+      .btn-confirm,
+      .btn-cancel {
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        cursor: pointer;
+        border: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
 
-        .btn-confirm {
-            background-color: #ef4444;
-            color: white;
-        }
+      .btn-confirm {
+        background-color: #ef4444;
+        color: white;
+      }
 
-        .btn-cancel {
-            background-color: #e2e8f0;
-            color: #1e293b;
-        }
+      .btn-cancel {
+        background-color: #e2e8f0;
+        color: #1e293b;
+      }
 
-        .btn-confirm:hover { background-color: #dc2626; }
-        .btn-cancel:hover { background-color: #cbd5e1; }
+      .btn-confirm:hover {
+        background-color: #dc2626;
+      }
+      .btn-cancel:hover {
+        background-color: #cbd5e1;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Sidebar -->
-     <aside class="sidebar">
-        <div class="logo">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-            </svg>
-            <span>Mi Bolsillo</span>
-        </div>
+    <aside class="sidebar">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+        </svg>
+        <span>Mi Bolsillo</span>
+      </div>
 
-        <nav class="nav-menu">
-            <a href="#" class="nav-item active">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                </svg>
-                <span>Inicio</span>
-            </a>
+      <nav class="nav-menu">
+        <a href="#" class="nav-item active">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          </svg>
+          <span>Inicio</span>
+        </a>
 
-            <a href="#" class="nav-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                    <line x1="1" y1="10" x2="23" y2="10"/>
-                </svg>
-                <span>Cuentas</span>
-            </a>
+        <a href="#" class="nav-item">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+            <line x1="1" y1="10" x2="23" y2="10" />
+          </svg>
+          <span>Cuentas</span>
+        </a>
 
-            <a href="#" class="nav-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="12" y1="1" x2="12" y2="23"/>
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                </svg>
-                <span>Transferencias</span>
-            </a>
+        <a href="#" class="nav-item">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="12" y1="1" x2="12" y2="23" />
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+          </svg>
+          <span>Transferencias</span>
+        </a>
 
-            <a href="{% url 'subir_cartola' %}" class="nav-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                     <path d="M4 4v16h16V4H4zm8 4v8m4-4H8"/>
-                </svg>
-                <span>Subir Cartola</span>
-            </a>
+        <a href="{% url 'subir_cartola' %}" class="nav-item">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M4 4v16h16V4H4zm8 4v8m4-4H8" />
+          </svg>
+          <span>Subir Cartola</span>
+        </a>
 
-            <a href="{% url 'configuracion' %}" class="nav-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="3"/>
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                </svg>
-                <span>Configuración</span>
-            </a>
-        </nav>
+        <a href="{% url 'configuracion' %}" class="nav-item">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+            />
+          </svg>
+          <span>Configuración</span>
+        </a>
+      </nav>
 
-        <div class="sidebar-footer">
-            <a href="#" class="logout-btn" id="logout-link">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                    <polyline points="16 17 21 12 16 7"/>
-                    <line x1="21" y1="12" x2="9" y2="12"/>
-                </svg>
-                <span>Cerrar sesión</span>
-            </a>
-        </div>
+      <div class="sidebar-footer">
+        <a href="#" class="logout-btn" id="logout-link">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          <span>Cerrar sesión</span>
+        </a>
+      </div>
     </aside>
 
-        <!-- Modal de confirmación -->
+    <!-- Modal de confirmación -->
     <div id="logoutModal" class="modal">
-        <div class="modal-content">
-            <h2>¿Cerrar sesión?</h2>
-            <p>¿Estás seguro de que deseas salir de tu cuenta?</p>
-            <div class="modal-buttons">
-                <button class="btn-cancel" id="cancelLogout">Cancelar</button>
-                <button class="btn-confirm" id="confirmLogout">Sí, cerrar sesión</button>
-            </div>
+      <div class="modal-content">
+        <h2>¿Cerrar sesión?</h2>
+        <p>¿Estás seguro de que deseas salir de tu cuenta?</p>
+        <div class="modal-buttons">
+          <button class="btn-cancel" id="cancelLogout">Cancelar</button>
+          <button class="btn-confirm" id="confirmLogout">
+            Sí, cerrar sesión
+          </button>
         </div>
+      </div>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-title">
-                <h1>Configuración</h1>
-                <p>Gestiona tu cuenta y preferencias</p>
-            </div>
-            <div class="user-info">
-                <span id="userName">{{ request.user.first_name|default:request.user.username }}</span>
-                <div class="user-avatar" id="userAvatar">JP</div>
-            </div>
+      <!-- Header -->
+      <div class="header">
+        <div class="header-title">
+          <h1>Configuración</h1>
+          <p>Gestiona tu cuenta y preferencias</p>
         </div>
-
-        <!-- Content Area -->
-        <div class="content-area">
-            <div class="config-container">
-                <!-- Tabs -->
-                <div class="config-tabs">
-                    <button class="tab-button active" data-tab="perfil">Perfil</button>
-                    <button class="tab-button" data-tab="seguridad">Seguridad</button>
-                    <button class="tab-button" data-tab="notificaciones">Notificaciones</button>
-                    <button class="tab-button" data-tab="preferencias">Preferencias</button>
-                </div>
-
-                <!-- Tab: Perfil -->
-                <div class="tab-content active" id="perfil">
-                    <div class="config-card">
-                        <h2 class="card-title">Foto de Perfil</h2>
-                        <div class="profile-photo-section">
-                            <div class="profile-photo" id="profilePhotoPreview">
-                                <span id="profileInitials">{{ request.user.first_name|default:request.user.username }}</span>
-                            </div>
-                            <div>
-                                <input type="file" id="photoInput" accept="image/*" style="display: none;">
-                                <button class="photo-upload-btn" onclick="document.getElementById('photoInput').click()">
-                                    📷 Cambiar Foto
-                                </button>
-                                <p style="font-size: 12px; color: #6b7280; margin-top: 8px;">
-                                    JPG, PNG o GIF. Máximo 2MB.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="config-card">
-                        <h2 class="card-title">ℹ️ Información Personal</h2>
-                        <form id="profileForm">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label">Nombre Completo</label>
-                                    <input type="text" class="form-input" id="nombre" placeholder="Juan Pérez" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">RUT</label>
-                                    <input type="text" class="form-input" id="rut" placeholder="12.345.678-9">
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label">Correo Electrónico</label>
-                                    <input type="email" class="form-input" id="email" placeholder="juan.perez@email.com" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Teléfono</label>
-                                    <input type="tel" class="form-input" id="telefono" placeholder="+56 9 1234 5678">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Dirección</label>
-                                <input type="text" class="form-input" id="direccion" placeholder="Av. Principal 123, Santiago">
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label">Ciudad</label>
-                                    <input type="text" class="form-input" id="ciudad" placeholder="Santiago">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Código Postal</label>
-                                    <input type="text" class="form-input" id="codigoPostal" placeholder="8320000">
-                                </div>
-                            </div>
-
-                            <div class="button-group">
-                                <button type="submit" class="btn-primary">💾 Guardar Cambios</button>
-                                <button type="button" class="btn-secondary" onclick="loadUserData()">↺ Restablecer</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Tab: Seguridad -->
-                <div class="tab-content" id="seguridad">
-                    <div class="config-card">
-                        <h2 class="card-title">🔐 Cambiar Contraseña</h2>
-                        <form id="passwordForm">
-                            <div class="form-group">
-                                <label class="form-label">Contraseña Actual</label>
-                                <input type="password" class="form-input" id="currentPassword" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Nueva Contraseña</label>
-                                <input type="password" class="form-input" id="newPassword" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Confirmar Nueva Contraseña</label>
-                                <input type="password" class="form-input" id="confirmPassword" required>
-                            </div>
-                            <div class="button-group">
-                                <button type="submit" class="btn-primary">🔒 Cambiar Contraseña</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="config-card">
-                        <h2 class="card-title">🛡️ Seguridad de la Cuenta</h2>
-                        <div class="security-item">
-                            <div class="security-info">
-                                <h3>Autenticación de dos factores</h3>
-                                <p>Agrega una capa extra de seguridad a tu cuenta</p>
-                            </div>
-                            <span class="status-badge status-inactive">Inactivo</span>
-                        </div>
-                        <div class="security-item">
-                            <div class="security-info">
-                                <h3>Última sesión</h3>
-                                <p>Hoy a las 10:30 AM desde Santiago, Chile</p>
-                            </div>
-                            <span class="status-badge status-active">Activo</span>
-                        </div>
-                        <div class="button-group">
-                            <button class="btn-secondary">🔐 Activar 2FA</button>
-                            <button class="btn-danger">🚪 Cerrar todas las sesiones</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab: Notificaciones -->
-                <div class="tab-content" id="notificaciones">
-                    <div class="config-card">
-                        <h2 class="card-title">📧 Notificaciones por Email</h2>
-                        <div class="toggle-group">
-                            <div class="toggle-label">
-                                <div class="toggle-title">Transacciones</div>
-                                <div class="toggle-description">Recibe alertas cuando se realicen transacciones</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="notifTransacciones" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        <div class="toggle-group">
-                            <div class="toggle-label">
-                                <div class="toggle-title">Recordatorios de pago</div>
-                                <div class="toggle-description">Avisos antes de vencimientos importantes</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="notifPagos" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        <div class="toggle-group">
-                            <div class="toggle-label">
-                                <div class="toggle-title">Resumen mensual</div>
-                                <div class="toggle-description">Recibe un resumen de tu actividad cada mes</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="notifResumen">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="config-card">
-                        <h2 class="card-title"> Notificaciones Push</h2>
-                        <div class="toggle-group">
-                            <div class="toggle-label">
-                                <div class="toggle-title">Alertas en tiempo real</div>
-                                <div class="toggle-description">Notificaciones instantáneas de actividad</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="notifPush" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        <div class="toggle-group">
-                            <div class="toggle-label">
-                                <div class="toggle-title">Promociones</div>
-                                <div class="toggle-description">Ofertas y novedades del sistema</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="notifPromociones">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        <div class="button-group">
-                            <button class="btn-primary" onclick="saveNotifications()">💾 Guardar Preferencias</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab: Preferencias -->
-                <div class="tab-content" id="preferencias">
-                    <div class="config-card">
-                        <h2 class="card-title">🌍 Configuración Regional</h2>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Idioma</label>
-                                <select class="form-select" id="idioma">
-                                    <option value="es" selected>Español</option>
-                                    <option value="en">English</option>
-                                    <option value="pt">Português</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Moneda</label>
-                                <select class="form-select" id="moneda">
-                                    <option value="CLP" selected>Peso Chileno (CLP)</option>
-                                    <option value="USD">Dólar (USD)</option>
-                                    <option value="EUR">Euro (EUR)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Zona Horaria</label>
-                            <select class="form-select" id="zonaHoraria">
-                                <option value="America/Santiago" selected>Santiago (GMT-3)</option>
-                                <option value="America/New_York">Nueva York (GMT-5)</option>
-                                <option value="Europe/Madrid">Madrid (GMT+1)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="config-card">
-                        <h2 class="card-title">🎨 Apariencia</h2>
-                        <div class="toggle-group">
-                            <div class="toggle-label">
-                                <div class="toggle-title">Modo Oscuro</div>
-                                <div class="toggle-description">Usa una interfaz con colores oscuros</div>
-                            </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="modoOscuro">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        <div class="button-group">
-                            <button class="btn-primary" onclick="savePreferences()">💾 Guardar Preferencias</button>
-                        </div>
-                    </div>
-
-                    <div class="config-card">
-                        <h2 class="card-title">⚠️ Zona de Peligro</h2>
-                        <div style="padding: 20px; background: #fef2f2; border-radius: 8px; margin-bottom: 20px;">
-                            <p style="color: #991b1b; font-size: 14px;">
-                                <strong>Advertencia:</strong> Esta acción eliminará permanentemente tu cuenta y todos tus datos. Esta acción no se puede deshacer.
-                            </p>
-                        </div>
-                        <button class="btn-danger" onclick="confirmDeleteAccount()">🗑️ Eliminar Cuenta</button>
-                    </div>
-                </div>
-            </div>
+        <div class="user-info">
+          <span id="userName"
+            >{{ request.user.first_name|default:request.user.username }}</span
+          >
+          <div class="user-avatar" id="userAvatar">JP</div>
         </div>
+      </div>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <div class="config-container">
+          <!-- Tabs -->
+          <div class="config-tabs">
+            <button class="tab-button active" data-tab="perfil">Perfil</button>
+            <button class="tab-button" data-tab="seguridad">Seguridad</button>
+            <button class="tab-button" data-tab="notificaciones">
+              Notificaciones
+            </button>
+            <button class="tab-button" data-tab="preferencias">
+              Preferencias
+            </button>
+          </div>
+
+          <!-- Tab: Perfil -->
+          <div class="tab-content active" id="perfil">
+            <div class="config-card">
+              <h2 class="card-title">Foto de Perfil</h2>
+              <div class="profile-photo-section">
+                <div class="profile-photo" id="profilePhotoPreview">
+                  <span id="profileInitials"
+                    >{{ request.user.first_name|default:request.user.username
+                    }}</span
+                  >
+                </div>
+                <div>
+                  <input
+                    type="file"
+                    id="photoInput"
+                    accept="image/*"
+                    style="display: none"
+                  />
+                  <button
+                    class="photo-upload-btn"
+                    onclick="document.getElementById('photoInput').click()"
+                  >
+                    📷 Cambiar Foto
+                  </button>
+                  <p style="font-size: 12px; color: #6b7280; margin-top: 8px">
+                    JPG, PNG o GIF. Máximo 2MB.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="config-card">
+              <h2 class="card-title">ℹ️ Información Personal</h2>
+              <form
+                method="POST"
+                enctype="multipart/form-data"
+                id="profileForm"
+                class="form-contenedor"
+              >
+                {% csrf_token %}
+
+                <!-- Información Personal -->
+                <div class="card-seccion">
+                  <h3 class="titulo-seccion">
+                    <i class="fas fa-user text-primary"></i> Información
+                    Personal
+                  </h3>
+                  <div class="fila-formulario">
+                    <div class="campo">
+                      <label for="id_first_name">Nombre:</label>
+                      {{ user_form.first_name }}
+                    </div>
+                    <div class="campo">
+                      <label for="id_email">Correo electrónico:</label>
+                      {{ user_form.email }}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Datos de Contacto -->
+                <div class="card-seccion">
+                  <h3 class="titulo-seccion">
+                    <i class="fas fa-phone text-primary"></i> Datos de Contacto
+                  </h3>
+                  <div class="fila-formulario">
+                    <div class="campo">
+                      <label for="id_rut">RUT:</label>
+                      {{ perfil_form.rut }}
+                    </div>
+                    <div class="campo">
+                      <label for="id_telefono">Teléfono:</label>
+                      {{ perfil_form.telefono }}
+                    </div>
+                  </div>
+                  <div class="fila-formulario">
+                    <div class="campo">
+                      <label for="id_direccion">Dirección:</label>
+                      {{ perfil_form.direccion }}
+                    </div>
+                    <div class="campo">
+                      <label for="id_ciudad">Ciudad:</label>
+                      {{ perfil_form.ciudad }}
+                    </div>
+                  </div>
+                  <div class="fila-formulario">
+                    <div class="campo">
+                      <label for="id_codigo_postal">Código Postal:</label>
+                      {{ perfil_form.codigo_postal }}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Foto de Perfil -->
+                <div class="card-seccion">
+                  <h3 class="titulo-seccion">
+                    <i class="fas fa-camera text-primary"></i> Foto de Perfil
+                  </h3>
+                  <div class="campo">{{ perfil_form.foto }}</div>
+                </div>
+
+                <!-- Botón de Guardar -->
+                <div class="acciones">
+                  <button type="submit" class="btn-guardar">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Tab: Seguridad -->
+          <div class="tab-content" id="seguridad">
+            <div class="config-card">
+              <h2 class="card-title">🔐 Cambiar Contraseña</h2>
+              <form id="passwordForm">
+                <div class="form-group">
+                  <label class="form-label">Contraseña Actual</label>
+                  <input
+                    type="password"
+                    class="form-input"
+                    id="currentPassword"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Nueva Contraseña</label>
+                  <input
+                    type="password"
+                    class="form-input"
+                    id="newPassword"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Confirmar Nueva Contraseña</label>
+                  <input
+                    type="password"
+                    class="form-input"
+                    id="confirmPassword"
+                    required
+                  />
+                </div>
+                <div class="button-group">
+                  <button type="submit" class="btn-primary">
+                    🔒 Cambiar Contraseña
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div class="config-card">
+              <h2 class="card-title">🛡️ Seguridad de la Cuenta</h2>
+              <div class="security-item">
+                <div class="security-info">
+                  <h3>Autenticación de dos factores</h3>
+                  <p>Agrega una capa extra de seguridad a tu cuenta</p>
+                </div>
+                <span class="status-badge status-inactive">Inactivo</span>
+              </div>
+              <div class="security-item">
+                <div class="security-info">
+                  <h3>Última sesión</h3>
+                  <p>Hoy a las 10:30 AM desde Santiago, Chile</p>
+                </div>
+                <span class="status-badge status-active">Activo</span>
+              </div>
+              <div class="button-group">
+                <button class="btn-secondary">🔐 Activar 2FA</button>
+                <button class="btn-danger">🚪 Cerrar todas las sesiones</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab: Notificaciones -->
+          <div class="tab-content" id="notificaciones">
+            <div class="config-card">
+              <h2 class="card-title">📧 Notificaciones por Email</h2>
+              <div class="toggle-group">
+                <div class="toggle-label">
+                  <div class="toggle-title">Transacciones</div>
+                  <div class="toggle-description">
+                    Recibe alertas cuando se realicen transacciones
+                  </div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="notifTransacciones" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="toggle-group">
+                <div class="toggle-label">
+                  <div class="toggle-title">Recordatorios de pago</div>
+                  <div class="toggle-description">
+                    Avisos antes de vencimientos importantes
+                  </div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="notifPagos" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="toggle-group">
+                <div class="toggle-label">
+                  <div class="toggle-title">Resumen mensual</div>
+                  <div class="toggle-description">
+                    Recibe un resumen de tu actividad cada mes
+                  </div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="notifResumen" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="config-card">
+              <h2 class="card-title">Notificaciones Push</h2>
+              <div class="toggle-group">
+                <div class="toggle-label">
+                  <div class="toggle-title">Alertas en tiempo real</div>
+                  <div class="toggle-description">
+                    Notificaciones instantáneas de actividad
+                  </div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="notifPush" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="toggle-group">
+                <div class="toggle-label">
+                  <div class="toggle-title">Promociones</div>
+                  <div class="toggle-description">
+                    Ofertas y novedades del sistema
+                  </div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="notifPromociones" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="button-group">
+                <button class="btn-primary" onclick="saveNotifications()">
+                  💾 Guardar Preferencias
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab: Preferencias -->
+          <div class="tab-content" id="preferencias">
+            <div class="config-card">
+              <h2 class="card-title">🌍 Configuración Regional</h2>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Idioma</label>
+                  <select class="form-select" id="idioma">
+                    <option value="es" selected>Español</option>
+                    <option value="en">English</option>
+                    <option value="pt">Português</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Moneda</label>
+                  <select class="form-select" id="moneda">
+                    <option value="CLP" selected>Peso Chileno (CLP)</option>
+                    <option value="USD">Dólar (USD)</option>
+                    <option value="EUR">Euro (EUR)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Zona Horaria</label>
+                <select class="form-select" id="zonaHoraria">
+                  <option value="America/Santiago" selected>
+                    Santiago (GMT-3)
+                  </option>
+                  <option value="America/New_York">Nueva York (GMT-5)</option>
+                  <option value="Europe/Madrid">Madrid (GMT+1)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="config-card">
+              <h2 class="card-title">🎨 Apariencia</h2>
+              <div class="toggle-group">
+                <div class="toggle-label">
+                  <div class="toggle-title">Modo Oscuro</div>
+                  <div class="toggle-description">
+                    Usa una interfaz con colores oscuros
+                  </div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="modoOscuro" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="button-group">
+                <button class="btn-primary" onclick="savePreferences()">
+                  💾 Guardar Preferencias
+                </button>
+              </div>
+            </div>
+
+            <div class="config-card">
+              <h2 class="card-title">⚠️ Zona de Peligro</h2>
+              <div
+                style="
+                  padding: 20px;
+                  background: #fef2f2;
+                  border-radius: 8px;
+                  margin-bottom: 20px;
+                "
+              >
+                <p style="color: #991b1b; font-size: 14px">
+                  <strong>Advertencia:</strong> Esta acción eliminará
+                  permanentemente tu cuenta y todos tus datos. Esta acción no se
+                  puede deshacer.
+                </p>
+              </div>
+              <button class="btn-danger" onclick="confirmDeleteAccount()">
+                🗑️ Eliminar Cuenta
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-        <!-- Modal de confirmación -->
+    <!-- Modal de confirmación -->
     <div id="logoutModal" class="modal">
-        <div class="modal-content">
-            <h2>¿Cerrar sesión?</h2>
-            <p>¿Estás seguro de que deseas salir de tu cuenta?</p>
-            <div class="modal-buttons">
-                <button class="btn-cancel" id="cancelLogout">Cancelar</button>
-                <button class="btn-confirm" id="confirmLogout">Sí, cerrar sesión</button>
-            </div>
+      <div class="modal-content">
+        <h2>¿Cerrar sesión?</h2>
+        <p>¿Estás seguro de que deseas salir de tu cuenta?</p>
+        <div class="modal-buttons">
+          <button class="btn-cancel" id="cancelLogout">Cancelar</button>
+          <button class="btn-confirm" id="confirmLogout">
+            Sí, cerrar sesión
+          </button>
         </div>
+      </div>
     </div>
 
     <!-- Notification -->
     <div class="notification" id="notification">
-        <span id="notificationText">Cambios guardados exitosamente</span>
+      <span id="notificationText">Cambios guardados exitosamente</span>
     </div>
 
     <script src="js/configuracion.js"></script>
     <script src="js/api.js"></script>
 
     <script>
-        // --- Modal logout ---
-        const logoutLink = document.getElementById('logout-link');
-        const logoutModal = document.getElementById('logoutModal');
-        const cancelLogout = document.getElementById('cancelLogout');
-        const confirmLogout = document.getElementById('confirmLogout');
+      // --- Modal logout ---
+      const logoutLink = document.getElementById("logout-link");
+      const logoutModal = document.getElementById("logoutModal");
+      const cancelLogout = document.getElementById("cancelLogout");
+      const confirmLogout = document.getElementById("confirmLogout");
 
-        logoutLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            logoutModal.style.display = 'flex';
-        });
+      logoutLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        logoutModal.style.display = "flex";
+      });
 
-        cancelLogout.addEventListener('click', () => {
-            logoutModal.style.display = 'none';
-        });
+      cancelLogout.addEventListener("click", () => {
+        logoutModal.style.display = "none";
+      });
 
-        confirmLogout.addEventListener('click', () => {
-            window.location.href = "{% url 'logout' %}";
-        });
+      confirmLogout.addEventListener("click", () => {
+        window.location.href = "{% url 'logout' %}";
+      });
 
-        // Cerrar el modal al hacer clic fuera del contenido
-        window.addEventListener('click', (e) => {
-            if (e.target === logoutModal) {
-                logoutModal.style.display = 'none';
-            }
-        });
+      // Cerrar el modal al hacer clic fuera del contenido
+      window.addEventListener("click", (e) => {
+        if (e.target === logoutModal) {
+          logoutModal.style.display = "none";
+        }
+      });
     </script>
-
-</body>
+  </body>
 </html>
