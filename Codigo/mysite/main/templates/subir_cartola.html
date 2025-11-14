@@ -15,103 +15,7 @@
   </head>
   <body>
     <div class="app-shell">
-      <aside class="sidebar">
-        <div class="logo">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
-            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-          </svg>
-          <span>Mi Bolsillo</span>
-        </div>
-        <nav class="nav-menu">
-          <a href="{% url 'pagina_principal' %}" class="nav-item">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-            </svg>
-            <span>Inicio</span>
-          </a>
-          <a href="#" class="nav-item">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
-              <line x1="1" y1="10" x2="23" y2="10" />
-            </svg>
-            <span>Cuentas</span>
-          </a>
-          <a href="#" class="nav-item">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <line x1="12" y1="1" x2="12" y2="23" />
-              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
-            <span>Movimientos</span>
-          </a>
-          <a href="{% url 'subir_cartola' %}" class="nav-item active">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M4 4v16h16V4H4zm8 4v8m4-4H8" />
-            </svg>
-            <span>Subir cartola</span>
-          </a>
-          <a href="{% url 'configuracion' %}" class="nav-item">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="3" />
-              <path
-                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.5"
-              />
-            </svg>
-            <span>Configuracion</span>
-          </a>
-        </nav>
-        <div class="sidebar-footer">
-          <a href="{% url 'logout' %}" class="logout-btn">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
-            <span>Cerrar sesion</span>
-          </a>
-        </div>
-      </aside>
+      {% include 'includes/sidebar.html' with active='subir' %}
 
       <main class="main-content">
         <header class="page-header">
@@ -164,6 +68,31 @@
             class="upload-form"
           >
             {% csrf_token %}
+            <label for="cuenta_id" class="field-label"
+              >Selecciona la cuenta bancaria</label
+            >
+            <div class="field-block">
+              <select
+                name="cuenta_id"
+                id="cuenta_id"
+                class="select-input"
+                {% if not cuentas %}disabled{% endif %}
+                required
+              >
+                <option value="">Elige una cuenta</option>
+                {% for cuenta in cuentas %}
+                <option value="{{ cuenta.id }}">
+                  {{ cuenta.nombre_identificador }} · {{ cuenta.banco }}
+                </option>
+                {% endfor %}
+              </select>
+              {% if not cuentas %}
+              <p class="field-hint">
+                Aún no tienes cuentas registradas.
+                <a href="{% url 'cuentas_create' %}">Créala aquí</a>.
+              </p>
+              {% endif %}
+            </div>
             <label for="archivo_excel" class="field-label"
               >Selecciona el archivo Excel</label
             >
@@ -177,7 +106,18 @@
               />
               <span class="file-hint">Arrastra y suelta o haz clic</span>
             </div>
-            <button type="submit" class="btn-primary">Subir cartola</button>
+            <button
+              type="submit"
+              class="btn-primary"
+              {% if not cuentas %}disabled{% endif %}
+            >
+              Subir cartola
+            </button>
+            {% if not cuentas %}
+            <p class="field-hint">
+              Debes registrar una cuenta bancaria antes de subir cartolas.
+            </p>
+            {% endif %}
           </form>
 
           <div class="tips">

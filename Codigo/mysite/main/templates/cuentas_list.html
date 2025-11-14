@@ -1,0 +1,94 @@
+{% load static l10n %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cuentas bancarias - Mi Bolsillo</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon-32x32.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/cuentas.css' %}" />
+  </head>
+  <body>
+    <div class="app-shell">
+      {% include 'includes/sidebar.html' with active='cuentas' %}
+
+      <main class="main-content">
+        <header class="page-header">
+          <div>
+            <p class="eyebrow">Cuentas bancarias</p>
+            <h1>Administración de cuentas</h1>
+            <p class="intro">
+              Gestiona las cuentas que utilizarás al subir nuevas cartolas. Mantén la información al día para facilitar el proceso.
+            </p>
+          </div>
+          <div class="page-header-actions">
+            <a href="{% url 'cuentas_create' %}" class="btn-primary">Nueva cuenta</a>
+            <div class="user-pill">
+              <img src="{{ profile_avatar_url }}" alt="Foto de {{ request.user.username }}" class="avatar avatar-sm" />
+              <span>{{ request.user.username }}</span>
+            </div>
+          </div>
+        </header>
+
+        {% if messages %}
+        <div class="alert-stack">
+          {% for message in messages %}
+          <div class="alert {{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <section class="card table-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Tus cuentas</p>
+              <h2>Resumen general</h2>
+              <p class="helper-text">
+                Todas las cuentas se ordenan automáticamente por fecha de creación, mostrando primero las más recientes.
+              </p>
+            </div>
+          </div>
+
+          {% if cuentas %}
+          <div class="table-responsive">
+            <table class="accounts-table">
+              <thead>
+                <tr>
+                  <th>Nombre identificador</th>
+                  <th>Banco</th>
+                  <th>Número de cuenta</th>
+                  <th>Saldo inicial</th>
+                  <th>Creada</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for cuenta in cuentas %}
+                <tr>
+                  <td>{{ cuenta.nombre_identificador }}</td>
+                  <td>{{ cuenta.banco }}</td>
+                  <td class="mono">{{ cuenta.numero_cuenta }}</td>
+                  <td>${{ cuenta.saldo_inicial|floatformat:2 }}</td>
+                  <td>{{ cuenta.fecha_creacion|date:"d-m-Y H:i" }}</td>
+                  <td class="actions">
+                    <a href="{% url 'cuentas_edit' cuenta.pk %}" class="action-link">Editar</a>
+                    <a href="{% url 'cuentas_delete' cuenta.pk %}" class="action-link danger">Eliminar</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <div class="empty-state">
+            <h3>Aún no tienes cuentas registradas</h3>
+            <p>Crea tu primera cuenta bancaria para comenzar a asociar las cartolas que subas al sistema.</p>
+            <a href="{% url 'cuentas_create' %}" class="btn-primary">Crear cuenta</a>
+          </div>
+          {% endif %}
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Categorías - Mi Bolsillo</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon-32x32.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/cuentas.css' %}" />
+  </head>
+  <body>
+    <div class="app-shell">
+      {% include 'includes/sidebar.html' with active='categorias' %}
+
+      <main class="main-content">
+        <header class="page-header">
+          <div>
+            <p class="eyebrow">Clasificación</p>
+            <h1>Categorías de movimientos</h1>
+            <p class="intro">
+              Utiliza categorías para agrupar tus gastos, ingresos y transferencias, y obtener mejores reportes.
+            </p>
+          </div>
+          <div class="page-header-actions">
+            <a href="{% url 'categorias_create' %}" class="btn-primary">Nueva categoría</a>
+            <div class="user-pill">
+              <img src="{{ profile_avatar_url }}" alt="Foto de {{ request.user.username }}" class="avatar avatar-sm" />
+              <span>{{ request.user.username }}</span>
+            </div>
+          </div>
+        </header>
+
+        {% if messages %}
+        <div class="alert-stack">
+          {% for message in messages %}
+          <div class="alert {{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <section class="card table-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Listado</p>
+              <h2>Tus categorías</h2>
+              <p class="helper-text">Organiza los movimientos asignándoles un color y un tipo.</p>
+            </div>
+          </div>
+
+          {% if categorias %}
+          <div class="table-responsive">
+            <table class="accounts-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Tipo</th>
+                  <th>Color</th>
+                  <th>Descripción</th>
+                  <th>Creación</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for categoria in categorias %}
+                <tr>
+                  <td>{{ categoria.nombre }}</td>
+                  <td>{{ categoria.tipo }}</td>
+                  <td>
+                    <span class="color-chip" style="background: {{ categoria.color }}"></span>
+                    <span class="mono">{{ categoria.color }}</span>
+                  </td>
+                  <td>{{ categoria.descripcion|default:'-' }}</td>
+                  <td>{{ categoria.fecha_creacion|date:"d-m-Y H:i" }}</td>
+                  <td class="actions">
+                    <a href="{% url 'categorias_edit' categoria.pk %}" class="action-link">Editar</a>
+                    <a href="{% url 'categorias_delete' categoria.pk %}" class="action-link danger">Eliminar</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <div class="empty-state">
+            <h3>No tienes categorías registradas</h3>
+            <p>Crea tu primera categoría para comenzar a clasificar los movimientos bancarios.</p>
+            <a href="{% url 'categorias_create' %}" class="btn-primary">Crear categoría</a>
+          </div>
+          {% endif %}
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

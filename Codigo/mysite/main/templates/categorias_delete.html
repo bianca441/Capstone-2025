@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eliminar categoría - Mi Bolsillo</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon-32x32.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/cuentas.css' %}" />
+  </head>
+  <body>
+    <div class="app-shell">
+      {% include 'includes/sidebar.html' with active='categorias' %}
+
+      <main class="main-content">
+        <header class="page-header">
+          <div>
+            <p class="eyebrow text-danger">Acción irreversible</p>
+            <h1>Eliminar {{ categoria.nombre }}</h1>
+            <p class="intro">Los movimientos asociados conservarán su historial, pero quedarán sin categoría.</p>
+          </div>
+          <div class="page-header-actions">
+            <a href="{% url 'categorias_list' %}" class="ghost-button">Volver al listado</a>
+            <div class="user-pill">
+              <img src="{{ profile_avatar_url }}" alt="Foto de {{ request.user.username }}" class="avatar avatar-sm" />
+              <span>{{ request.user.username }}</span>
+            </div>
+          </div>
+        </header>
+
+        <section class="card form-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow text-danger">Confirma la eliminación</p>
+              <h2>¿Estás seguro de esta acción?</h2>
+              <p class="helper-text">Podrás crear esta categoría de nuevo más adelante si la necesitas.</p>
+            </div>
+          </div>
+
+            <form method="POST" class="account-form">
+              {% csrf_token %}
+              <div class="form-actions">
+                <a href="{% url 'categorias_list' %}" class="ghost-button">Cancelar</a>
+                <button type="submit" class="btn-danger">Eliminar</button>
+              </div>
+            </form>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

@@ -171,6 +171,15 @@ body {
     padding: 8px 10px;
 }
 
+.date-filters select {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 8px 10px;
+    background: white;
+    min-width: 200px;
+    font-size: 14px;
+}
+
 .date-filters .btn-apply {
     background: var(--primary-accent);
     color: white;
@@ -184,6 +193,23 @@ body {
     color: var(--primary);
     text-decoration: none;
     padding: 8px 10px;
+}
+
+.account-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.account-pill strong {
+    color: var(--primary);
 }
 
 /* Welcome Section */

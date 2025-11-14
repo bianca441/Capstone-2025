@@ -1,481 +1,1162 @@
 ﻿{% load static number_filters l10n %}
+
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Tu Bolsillo - Inicio</title>
+
     <link rel="stylesheet" href="{% static 'css/pagina_principal.css' %}">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
+
         /* --- Modal de confirmaciÃ³n --- */
+
         .modal {
+
             display: none;
+
             position: fixed;
+
             z-index: 1000;
+
             left: 0; top: 0;
+
             width: 100%; height: 100%;
+
             background-color: rgba(0, 0, 0, 0.5);
+
             align-items: center; justify-content: center;
+
         }
+
+
 
         .modal-content {
+
             background: white;
+
             border-radius: 12px;
+
             padding: 2rem;
+
             text-align: center;
+
             width: 90%;
+
             max-width: 400px;
+
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+
         }
+
+
 
         .modal-content h2 {
+
             color: #1e293b;
+
             margin-bottom: 1rem;
+
         }
+
+
 
         .modal-content p {
+
             color: #475569;
+
             margin-bottom: 1.5rem;
+
         }
+
+
 
         .modal-buttons {
+
             display: flex;
+
             justify-content: center;
+
             gap: 1rem;
+
         }
+
+
 
         .btn-confirm, .btn-cancel {
+
             padding: 0.6rem 1.2rem;
+
             border-radius: 8px;
+
             cursor: pointer;
+
             border: none;
+
             font-weight: 600;
+
             font-size: 0.95rem;
+
         }
+
+
 
         .btn-confirm {
+
             background-color: #ef4444;
+
             color: white;
+
         }
+
+
 
         .btn-cancel {
+
             background-color: #e2e8f0;
+
             color: #1e293b;
+
         }
+
+
 
         .btn-confirm:hover { background-color: #dc2626; }
+
         .btn-cancel:hover { background-color: #cbd5e1; }
+
     </style>
+
 </head>
+
 <body>
+
     {% if messages %}
+
     <div class="messages">
+
         {% for message in messages %}
+
             <div class="{{ message.tags }}">{{ message }}</div>
+
         {% endfor %}
+
     </div>
+
     {% endif %}
 
+
+
     <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="logo">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-            </svg>
-            <span>Mi Bolsillo</span>
-        </div>
-
-        <nav class="nav-menu">
-            <a href="#" class="nav-item active">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                </svg>
-                <span>Inicio</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                    <line x1="1" y1="10" x2="23" y2="10"/>
-                </svg>
-                <span>Cuentas</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="12" y1="1" x2="12" y2="23"/>
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                </svg>
-                <span>Transferencias</span>
-            </a>
-
-            <a href="{% url 'subir_cartola' %}" class="nav-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                     <path d="M4 4v16h16V4H4zm8 4v8m4-4H8"/>
-                </svg>
-                <span>Subir Cartola</span>
-            </a>
-
-            <a href="{% url 'configuracion' %}" class="nav-item">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="3"/>
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                </svg>
-                <span>ConfiguraciÃ³n</span>
-            </a>
-        </nav>
-
-        <!-- Cierre de sesiÃ³n con confirmaciÃ³n -->
-        <div class="sidebar-footer">
-            <a href="#" class="logout-btn" id="logout-link">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                    <polyline points="16 17 21 12 16 7"/>
-                    <line x1="21" y1="12" x2="9" y2="12"/>
-                </svg>
-                <span>Cerrar sesiÃ³n</span>
-            </a>
-        </div>
-    </aside>
-
+    {% include 'includes/sidebar.html' with active='inicio' %}
     <!-- Modal de confirmaciÃ³n -->
+
     <div id="logoutModal" class="modal">
+
         <div class="modal-content">
+
             <h2>Â¿Cerrar sesiÃ³n?</h2>
-            <p>Â¿EstÃ¡s seguro de que deseas salir de tu cuenta?</p>
+
+            <p>Â¿Estas seguro de que deseas salir de tu cuenta?</p>
+
             <div class="modal-buttons">
+
                 <button class="btn-cancel" id="cancelLogout">Cancelar</button>
+
                 <button class="btn-confirm" id="confirmLogout">SÃ­, cerrar sesiÃ³n</button>
+
             </div>
+
             </div>
+
         </div>
+
     </div>
 
+
+
     <!-- Main Content -->
+
     <main class="main-content">
+
         <header class="header">
 
+
+
             <div class="user-profile">
+
                 <span class="user-name">{{ request.user.username }}</span>
+
                 <div class="user-avatar">
+
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+
                         <circle cx="12" cy="7" r="4"/>
+
                     </svg>
+
                 </div>
+
             </div>
+
         </header>
 
+
+
         <div class="dashboard-container">
+
             <div class="welcome-section">
+
                 <h1>Bienvenido, {{ request.user.first_name|default:request.user.username }}</h1>
+
                 <p>AquÃ­ estÃ¡ el resumen de tu actividad financiera</p>
+
+                <div class="account-pill">
+
+                    <span>Datos de</span>
+
+                    <strong>{{ cuenta_resumen }}</strong>
+
+                </div>
+
             </div>
+
             <form method="get" class="date-filters">
+
                 <div class="filters-row">
+
                     <label>Desde
-                        <input type="text" id="inicio-display" placeholder="DD/MM/YYYY" value="{{ inicio|date:'d/m/Y' }}">
-                        <input type="hidden" id="inicio-iso" name="inicio" value="{{ inicio|date:'Y-m-d' }}">
+
+                        <input type="text" id="inicio-display" placeholder="DD-MM-YYYY" value="{{ inicio|date:'d-m-Y' }}">
+
+                        <input type="hidden" id="inicio-iso" name="inicio" value="{{ inicio|date:'d-m-Y' }}">
+
                     </label>
+
                     <label>Hasta
-                        <input type="text" id="fin-display" placeholder="DD/MM/YYYY" value="{{ fin|date:'d/m/Y' }}">
-                        <input type="hidden" id="fin-iso" name="fin" value="{{ fin|date:'Y-m-d' }}">
+
+                        <input type="text" id="fin-display" placeholder="DD-MM-YYYY" value="{{ fin|date:'d-m-Y' }}">
+
+                        <input type="hidden" id="fin-iso" name="fin" value="{{ fin|date:'d-m-Y' }}">
+
                     </label>
+
+                    <label>Cuenta
+
+                        <select name="cuenta" aria-label="Seleccionar cuenta">
+
+                            <option value="todas" {% if cuenta_actual == 'todas' %}selected{% endif %}>Todas las cuentas</option>
+
+                            {% for cuenta in cuentas_usuario %}
+
+                            <option value="{{ cuenta.id }}" {% if cuenta_actual == cuenta.id|stringformat:"s" %}selected{% endif %}>
+
+                                {{ cuenta.nombre_identificador }} ï¿½ {{ cuenta.banco }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </label>
+
                     <button type="submit" class="btn-apply">Aplicar</button>
+
                     <a href="{% url 'pagina_principal' %}" class="btn-clear">Limpiar</a>
+
                 </div>
+
             </form>
+
             <!-- Resumen (Dashboard) -->
+
             <section class="summary-cards">
+
                 <div class="card card-balance">
+
                     <div class="card-header">
+
                         <div class="card-label">Saldo actual</div>
+
                     </div>
-                    <div class="card-value">${{ saldo_actual|dot_thousands }}</div>
+
+                    <div class="card-value">${{ saldo_actual|floatformat:0|dot_thousands }}</div>
+
                     <div class="card-footer">Actualizado a {{ hoy }}</div>
+
                 </div>
 
+
+
                 <div class="card">
+
                     <div class="card-header">
+
                         <div class="card-label">Ingresos del mes</div>
+
                     </div>
-                    <div class="card-value card-income">+${{ total_abonos_mes|dot_thousands }}</div>
-                    <div class="card-footer">Desde {{ inicio|date:'d/m/Y' }} a {{ fin|date:'d/m/Y' }}</div>
+
+                    <div class="card-value card-income">${{ total_abonos_mes|floatformat:0|dot_thousands }}</div>
+
+                    <div class="card-footer">Desde {{ inicio|date:'d-m-Y' }} a {{ fin|date:'d-m-Y' }}</div>
+
                 </div>
+
+
 
                 <div class="card">
+
                     <div class="card-header">
+
                         <div class="card-label">Gastos del mes</div>
+
                     </div>
-                    <div class="card-value card-expenses">-${{ total_cargos_mes|dot_thousands }}</div>
-                    <div class="card-footer">Desde {{ inicio|date:'d/m/Y' }} a {{ fin|date:'d/m/Y' }}</div>
+
+                    <div class="card-value card-expenses">${{ total_cargos_mes|floatformat:0|dot_thousands }}</div>
+
+                    <div class="card-footer">Desde {{ inicio|date:'d-m-Y' }} a {{ fin|date:'d-m-Y' }}</div>
+
                 </div>
+
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div class="card-label">Gasto promedio diario</div>
+
+                    </div>
+
+                    <div class="card-value card-expenses">${{ gasto_promedio_diario|floatformat:0|dot_thousands }}</div>
+
+                    <div class="card-footer">Promedio en {{ dias_periodo }} dias del periodo</div>
+
+                </div>
+
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div class="card-label">Ingreso promedio diario</div>
+
+                    </div>
+
+                    <div class="card-value card-income">${{ ingreso_promedio_diario|floatformat:0|dot_thousands }}</div>
+
+                    <div class="card-footer">Promedio en {{ dias_periodo }} dias del periodo</div>
+
+                </div>
+
             </section>
 
-            <!-- Gráficos -->
+
+
             <section class="card" style="margin-top: 20px;">
+
                 <div class="card-header">
+
+                    <div>
+
+                        <div class="card-label">Flujo de dinero mensual (Ingresos vs Gastos)</div>
+
+                        <p class="helper-text">Compara cuanto ingresaste frente a lo que gastaste cada mes.</p>
+
+                    </div>
+
+                </div>
+
+                <div style="padding: 16px; height: 360px;">
+
+                    <canvas id="chartMonthly" style="width: 100%; height: 100%;"></canvas>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Grï¿½ficos -->
+
+            <section class="card" style="margin-top: 20px;">
+
+                <div class="card-header">
+
                     <div class="card-label">Ingresos vs Gastos (mes actual)</div>
+
                 </div>
+
                 <div style="padding: 16px; height: 360px;">
+
                     <canvas id="chartBar" style="width: 100%; height: 100%;"></canvas>
+
                 </div>
+
             </section>
 
-            <section class="card" style="margin-top: 20px;">
-                <div class="card-header">
-                    <div class="card-label">Distribución del mes</div>
-                </div>
-                <div style="padding: 16px; height: 320px;">
-                    <canvas id="chartPie" style="width: 100%; height: 100%;"></canvas>
-                </div>
-            </section>
+
+
+            <div class="chart-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 20px;">
+
+                <section class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <div class="card-label">Distribucion de gastos por categoria</div>
+
+                            <p class="helper-text">Identifica en que gastaste tu dinero este mes.</p>
+
+                        </div>
+
+                    </div>
+
+                    <div style="padding: 16px; height: 320px;">
+
+                        <canvas id="chartPie" style="width: 100%; height: 100%;"></canvas>
+
+                    </div>
+
+                </section>
+
+
+
+                <section class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <div class="card-label">Gasto promedio mensual por categoria</div>
+
+                            <p class="helper-text">Promedio del gasto mensual para cada rubro seleccionado.</p>
+
+                        </div>
+
+                    </div>
+
+                    <div style="padding: 16px; height: 320px;">
+
+                        <canvas id="chartAvgCategory" style="width: 100%; height: 100%;"></canvas>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
 
             <section class="card" style="margin-top: 20px;">
+
                 <div class="card-header">
+
                     <div class="card-label">Saldo acumulado (mes actual)</div>
+
                 </div>
+
                 <div style="padding: 16px; height: 360px;">
+
                     <canvas id="chartLine"></canvas>
+
                 </div>
+
             </section>
 
-            <!-- Últimos movimientos -->
+
+
+            <!-- ï¿½ltimos movimientos -->
+
             <section class="card" style="margin-top: 20px;">
+
                 <div class="card-header">
-                    <div class="card-label">Últimos movimientos</div>
+
+                    <div class="card-label">Ultimos movimientos</div>
+
                 </div>
+
                 <div class="table-responsive">
+
                     <table class="movements-table">
+
                         <thead>
+
                             <tr>
+
                                 <th>Fecha</th>
-                                <th>Descripción</th>
+
+                                <th>Descripcion</th>
+
                                 <th class="num">Abono</th>
+
                                 <th class="num">Cargo</th>
+
                                 <th class="num">Saldo</th>
+
                             </tr>
+
                         </thead>
+
                         <tbody>
+
                             {% if ultimos_movimientos %}
+
                                 {% for m in ultimos_movimientos %}
+
                                 <tr>
-                                    <td>{{ m.fecha|date:'d/m/Y' }}</td>
+
+                                    <td>{{ m.fecha|date:'d-m-Y' }}</td>
+
                                     <td class="desc">{{ m.descripcion }}</td>
+
                                     <td class="num {% if m.abono and m.abono > 0 %}monto-positivo{% endif %}">
+
                                         {% if m.abono %}${{ m.abono|floatformat:0|dot_thousands }}{% else %}-{% endif %}
+
                                     </td>
+
                                     <td class="num {% if m.cargo and m.cargo > 0 %}monto-negativo{% endif %}">
+
                                         {% if m.cargo %}${{ m.cargo|floatformat:0|dot_thousands }}{% else %}-{% endif %}
+
                                     </td>
+
                                     <td class="num">${{ m.saldo|default_if_none:0|floatformat:0|dot_thousands }}</td>
+
                                 </tr>
+
                                 {% endfor %}
+
                             {% else %}
+
                                 <tr>
+
                                     <td colspan="5">No hay movimientos registrados.</td>
+
                                 </tr>
+
                             {% endif %}
+
                         </tbody>
+
                     </table>
+
                 </div>
+
             </section>
+
             <!-- AquÃ­ irÃ­a el contenido del dashboard -->
+
         </div>
+
     </main>
 
+
+
     <script>
+
         // Sincroniza los campos visibles DD/MM/YYYY con los ocultos ISO (YYYY-MM-DD)
+
         document.addEventListener('DOMContentLoaded', function () {
+
             const form = document.querySelector('form.date-filters');
+
             if (!form) return;
+
             const visInicio = document.getElementById('inicio-display');
+
             const visFin = document.getElementById('fin-display');
+
             const isoInicio = document.getElementById('inicio-iso');
+
             const isoFin = document.getElementById('fin-iso');
 
+
+
             form.addEventListener('submit', function (e) {
-                const re = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+
+                const re = /^(\d{2})-(\d{2})-(\d{4})$/;
+
                 const mi = re.exec((visInicio.value || '').trim());
+
                 const mf = re.exec((visFin.value || '').trim());
+
                 if (!mi || !mf) {
-                    alert('Formato de fecha inválido. Usa DD/MM/YYYY.');
+
+                    alert('Formato de fecha invalido. Usa DD-MM-YYYY.');
+
                     e.preventDefault();
+
                     return;
+
                 }
-                isoInicio.value = `${mi[3]}-${mi[2]}-${mi[1]}`;
-                isoFin.value = `${mf[3]}-${mf[2]}-${mf[1]}`;
+
+                isoInicio.value = `${mi[1]}-${mi[2]}-${mi[3]}`;
+
+                isoFin.value = `${mf[1]}-${mf[2]}-${mf[3]}`;
+
             });
+
         });
+
     </script>
 
+
+
     <script>
+
         // Datos para grÃ¡ficos inyectados desde Django (Supabase vÃ­a ORM)
+
         const labels = {{ chart_labels_json|safe }};
+
         const dataAbonos = {{ chart_abonos_json|safe }};
+
         const dataCargos = {{ chart_cargos_json|safe }};
+
         const dataSaldo = {{ chart_saldo_json|safe }};
 
+        const monthlyLabels = {{ monthly_labels_json|safe }};
+
+        const monthlyIngresos = {{ monthly_abonos_json|safe }};
+
+        const monthlyGastos = {{ monthly_cargos_json|safe }};
+
+        const pieLabels = {{ pie_labels_json|safe }};
+
+        const pieValues = {{ pie_values_json|safe }};
+
+        const pieColors = {{ pie_colors_json|safe }};
+
+        const avgLabels = {{ avg_labels_json|safe }};
+
+        const avgValues = {{ avg_values_json|safe }};
+
+
+
         // Utilidad para seleccionar el canvas visible (evita duplicados ocultos en el modal)
+
         
 
-        const ctxBar = (function(){ var el=document.getElementById('chartBar'); return el?el.getContext('2d'):null; })();
-        if (ctxBar) {
-            try {
-            var sumArray = function(arr){ return (arr||[]).reduce(function(a,b){ return a + (Number(b)||0); }, 0); };
-            if (sumArray(dataAbonos) === 0 && sumArray(dataCargos) === 0) {
-                var cBar = document.getElementById('chartBar');
-                if (cBar && cBar.parentElement) {
-                    cBar.parentElement.innerHTML = '<div class="embed-placeholder"><p>Sin datos para el rango seleccionado</p></div>';
+
+
+        const ctxMonthly = (function(){ var el=document.getElementById('chartMonthly'); return el?el.getContext('2d'):null; })();
+
+        if (ctxMonthly) {
+
+            var sumMonthly = function(arr){ return (arr||[]).reduce(function(a,b){ return a + (Number(b)||0); }, 0); };
+
+            if (!monthlyLabels.length || (sumMonthly(monthlyIngresos) === 0 && sumMonthly(monthlyGastos) === 0)) {
+
+                var canvasMonthly = document.getElementById('chartMonthly');
+
+                if (canvasMonthly && canvasMonthly.parentElement) {
+
+                    canvasMonthly.parentElement.innerHTML = '<div class="embed-placeholder"><p>Sin datos suficientes para mostrar el flujo mensual</p></div>';
+
                 }
+
             } else {
-            new Chart(ctxBar, {
-                type: 'bar',
-                data: {
-                    labels,
-                    datasets: [
-                        {
-                            label: 'Ingresos',
-                            data: dataAbonos,
-                            backgroundColor: 'rgba(16, 185, 129, 0.6)',
-                            borderColor: 'rgba(16, 185, 129, 1)',
-                            borderWidth: 1,
-                        },
-                        {
-                            label: 'Gastos',
-                            data: dataCargos.map(v => -v), // mostrar gastos como negativos
-                            backgroundColor: 'rgba(239, 68, 68, 0.6)',
-                            borderColor: 'rgba(239, 68, 68, 1)',
-                            borderWidth: 1,
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value){ return "$" + value; }
+
+                new Chart(ctxMonthly, {
+
+                    type: 'bar',
+
+                    data: {
+
+                        labels: monthlyLabels,
+
+                        datasets: [
+
+                            {
+
+                                label: 'Ingresos',
+
+                                data: monthlyIngresos,
+
+                                backgroundColor: 'rgba(16, 185, 129, 0.7)',
+
+                                borderColor: 'rgba(16, 185, 129, 1)',
+
+                                borderWidth: 1.5,
+
+                                borderRadius: 4,
+
+                            },
+
+                            {
+
+                                label: 'Gastos',
+
+                                data: monthlyGastos,
+
+                                backgroundColor: 'rgba(239, 68, 68, 0.7)',
+
+                                borderColor: 'rgba(239, 68, 68, 1)',
+
+                                borderWidth: 1.5,
+
+                                borderRadius: 4,
+
                             }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        interaction: { mode: 'index', intersect: false },
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                ticks: {
+
+                                    callback: function(value){ return '$' + value.toLocaleString('es-CL'); }
+
+                                }
+
+                            }
+
                         }
+
                     }
-                }
-            });
+
+                });
+
             }
-            } catch(e) { console.error('Chart bar error', e); }
+
         }
+
+
+
+        const ctxBar = (function(){ var el=document.getElementById('chartBar'); return el?el.getContext('2d'):null; })();
+
+        if (ctxBar) {
+
+            try {
+
+            var sumArray = function(arr){ return (arr||[]).reduce(function(a,b){ return a + (Number(b)||0); }, 0); };
+
+            if (sumArray(dataAbonos) === 0 && sumArray(dataCargos) === 0) {
+
+                var cBar = document.getElementById('chartBar');
+
+                if (cBar && cBar.parentElement) {
+
+                    cBar.parentElement.innerHTML = '<div class="embed-placeholder"><p>Sin datos para el rango seleccionado</p></div>';
+
+                }
+
+            } else {
+
+            new Chart(ctxBar, {
+
+                type: 'bar',
+
+                data: {
+
+                    labels,
+
+                    datasets: [
+
+                        {
+
+                            label: 'Ingresos',
+
+                            data: dataAbonos,
+
+                            backgroundColor: 'rgba(16, 185, 129, 0.6)',
+
+                            borderColor: 'rgba(16, 185, 129, 1)',
+
+                            borderWidth: 1,
+
+                        },
+
+                        {
+
+                            label: 'Gastos',
+
+                            data: dataCargos.map(v => -v), // mostrar gastos como negativos
+
+                            backgroundColor: 'rgba(239, 68, 68, 0.6)',
+
+                            borderColor: 'rgba(239, 68, 68, 1)',
+
+                            borderWidth: 1,
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            ticks: {
+
+                                callback: function(value){ return "$" + value; }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            });
+
+            }
+
+            } catch(e) { console.error('Chart bar error', e); }
+
+        }
+
+
 
         const ctxPie = (function(){ var el=document.getElementById('chartPie'); return el?el.getContext('2d'):null; })();
+
         if (ctxPie) {
+
             try {
-            if ((Number({{ total_abonos_mes|default:0|unlocalize }}) || 0) === 0 && (Number({{ total_cargos_mes|default:0|unlocalize }}) || 0) === 0) {
+
+            var sumPie = function(arr){ return (arr||[]).reduce(function(a,b){ return a + (Number(b)||0); }, 0); };
+
+            if (!pieLabels.length || sumPie(pieValues) === 0) {
+
                 var cPie = document.getElementById('chartPie');
+
                 if (cPie && cPie.parentElement) {
-                    cPie.parentElement.innerHTML = '<div class="embed-placeholder"><p>Sin datos para el rango seleccionado</p></div>';
+
+                    cPie.parentElement.innerHTML = '<div class="embed-placeholder"><p>Sin datos categorizados para este rango</p></div>';
+
                 }
+
             } else {
+
             new Chart(ctxPie, {
+
                 type: 'doughnut',
+
                 data: {
-                    labels: ['Ingresos', 'Gastos'],
+
+                    labels: pieLabels,
+
                     datasets: [{
-                        data: [
-                            {{ total_abonos_mes|default:0|unlocalize }},
-                            {{ total_cargos_mes|default:0|unlocalize }}
-                        ],
-                        backgroundColor: ['#10b981', '#ef4444']
+
+                        data: pieValues,
+
+                        backgroundColor: pieColors.length ? pieColors : ['#0ea5e9', '#6366f1', '#f97316', '#f43f5e', '#14b8a6', '#a855f7']
+
                     }]
+
                 },
+
                 options: {
+
                     cutout: '65%',
+
                     plugins: {
+
                         legend: { position: 'bottom' }
+
                     }
+
                 }
+
             });
+
             }
+
             } catch(e) { console.error('Chart pie error', e); }
+
         }
+
+
+
+        const ctxAvg = (function(){ var el=document.getElementById('chartAvgCategory'); return el?el.getContext('2d'):null; })();
+
+        if (ctxAvg) {
+
+            try {
+
+            var sumAvg = function(arr){ return (arr||[]).reduce(function(a,b){ return a + (Number(b)||0); }, 0); };
+
+            if (!avgLabels.length || sumAvg(avgValues) === 0) {
+
+                var cAvg = document.getElementById('chartAvgCategory');
+
+                if (cAvg && cAvg.parentElement) {
+
+                    cAvg.parentElement.innerHTML = '<div class="embed-placeholder"><p>Sin datos para promediar</p></div>';
+
+                }
+
+            } else {
+
+            new Chart(ctxAvg, {
+
+                type: 'bar',
+
+                data: {
+
+                    labels: avgLabels,
+
+                    datasets: [{
+
+                        label: 'Promedio mensual',
+
+                        data: avgValues,
+
+                        backgroundColor: pieColors.length ? pieColors : ['#3b82f6', '#6366f1', '#f97316', '#f43f5e', '#14b8a6', '#a855f7'],
+
+                        borderColor: pieColors.length ? pieColors : ['#1d4ed8', '#4338ca', '#c2410c', '#b91c1c', '#0f766e', '#7e22ce'],
+
+                        borderWidth: 1.2,
+
+                        borderRadius: 6
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            ticks: {
+
+                                callback: function(value){ return '$' + value.toLocaleString('es-CL'); }
+
+                            }
+
+                        }
+
+                    },
+
+                    plugins: {
+
+                        legend: { display: false }
+
+                    }
+
+                }
+
+            });
+
+            }
+
+            } catch(e) { console.error('Chart avg error', e); }
+
+        }
+
+
 
         const ctxLine = (function(){ var el=document.getElementById('chartLine'); return el?el.getContext('2d'):null; })();
+
         if (ctxLine) {
+
             try {
+
             var sumAbs = function(arr){ return (arr||[]).reduce(function(a,b){ return a + Math.abs(Number(b)||0); }, 0); };
+
             if (sumAbs(dataSaldo) === 0) {
+
                 var cLine = document.getElementById('chartLine');
+
                 if (cLine && cLine.parentElement) {
+
                     cLine.parentElement.innerHTML = '<div class="embed-placeholder"><p>Sin datos para el rango seleccionado</p></div>';
+
                 }
+
             } else {
+
             new Chart(ctxLine, {
+
                 type: 'line',
+
                 data: {
+
                     labels,
+
                     datasets: [
+
                         {
+
                             label: 'Saldo acumulado',
+
                             data: dataSaldo,
+
                             borderColor: '#10b981',
+
                             backgroundColor: 'rgba(16, 185, 129, 0.15)',
+
                             borderWidth: 2,
+
                             fill: true,
+
                             tension: 0.25,
+
                             pointRadius: 0
+
                         }
+
                     ]
+
                 },
+
                 options: {
+
                     responsive: true,
+
                     maintainAspectRatio: false,
+
                     interaction: { mode: 'index', intersect: false },
+
                     scales: {
+
                         y: {
+
                             beginAtZero: false,
+
                             ticks: { callback: function(v){ return "$" + v; } }
+
                         }
+
                     },
+
                     plugins: {
+
                         legend: { position: 'bottom' }
+
                     }
+
                 }
+
             });
+
             }
+
             } catch(e) { console.error('Chart line error', e); }
+
         }
+
     </script>
+
+
 
     <script>
+
         // --- Modal logout ---
+
         const logoutLink = document.getElementById('logout-link');
+
         const logoutModal = document.getElementById('logoutModal');
+
         const cancelLogout = document.getElementById('cancelLogout');
+
         const confirmLogout = document.getElementById('confirmLogout');
 
+
+
         logoutLink.addEventListener('click', (e) => {
+
             e.preventDefault();
+
             logoutModal.style.display = 'flex';
+
         });
+
+
 
         cancelLogout.addEventListener('click', () => {
+
             logoutModal.style.display = 'none';
+
         });
+
+
 
         confirmLogout.addEventListener('click', () => {
+
             window.location.href = "{% url 'logout' %}";
+
         });
 
+
+
         // Cerrar el modal al hacer clic fuera del contenido
+
         window.addEventListener('click', (e) => {
+
             if (e.target === logoutModal) {
+
                 logoutModal.style.display = 'none';
+
             }
+
         });
+
     </script>
+
 </body>
+
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

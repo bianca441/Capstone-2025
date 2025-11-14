@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movimientos - Mi Bolsillo</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon-32x32.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/subir_cartola.css' %}" />
+  </head>
+  <body>
+    <div class="app-shell">
+      {% include 'includes/sidebar.html' with active='movimientos' %}
+
+      <main class="main-content">
+        <header class="page-header">
+          <div>
+            <p class="eyebrow">Movimientos por cuenta</p>
+            <h1>Gestiona tus transacciones</h1>
+            <p class="intro">
+              Filtra por rango de fechas y cuentas. Clasifica o re-clasifica aquellos movimientos que lo necesiten.
+            </p>
+          </div>
+          <div class="page-header-actions">
+            <div class="badge-info">
+              Sin categoría: {{ sin_categoria_total }} / {{ total_movimientos }}
+            </div>
+            <div class="user-pill">
+              <img src="{{ profile_avatar_url }}" alt="Foto de {{ request.user.username }}" class="avatar avatar-sm" />
+              <span>{{ request.user.username }}</span>
+            </div>
+          </div>
+        </header>
+
+        {% if messages %}
+        <div class="alert-stack">
+          {% for message in messages %}
+          <div class="alert {{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <section class="card upload-card">
+          <form method="get" class="filters-row" style="margin-bottom: 16px">
+            <label>Desde
+              <input type="date" name="inicio" value="{{ inicio|date:'Y-m-d' }}" class="select-input" />
+            </label>
+            <label>Hasta
+              <input type="date" name="fin" value="{{ fin|date:'Y-m-d' }}" class="select-input" />
+            </label>
+            <label>Cuenta
+              <select name="cuenta" class="select-input">
+                <option value="todas" {% if cuenta_actual == 'todas' %}selected{% endif %}>Todas las cuentas</option>
+                {% for cuenta in cuentas_usuario %}
+                <option value="{{ cuenta.id }}" {% if cuenta_actual == cuenta.id|stringformat:"s" %}selected{% endif %}>
+                  {{ cuenta.nombre_identificador }} · {{ cuenta.banco }}
+                </option>
+                {% endfor %}
+              </select>
+            </label>
+            <button type="submit" class="btn-primary">Filtrar</button>
+          </form>
+
+          <form method="POST" action="{% url 'guardar_categorias' %}" class="classification-form">
+            {% csrf_token %}
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Pendientes</p>
+                <h2>Movimientos sin categoría</h2>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="classification-table">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Descripción</th>
+                    <th>Cargo</th>
+                    <th>Abono</th>
+                    <th>Saldo</th>
+                    <th>Categoría</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for movimiento in movimientos_sin_categoria %}
+                  <tr>
+                    <td>{{ movimiento.fecha|date:"d-m-Y" }}</td>
+                    <td class="desc">{{ movimiento.descripcion }}</td>
+                    <td class="num">{% if movimiento.cargo %}${{ movimiento.cargo|floatformat:2 }}{% else %}-{% endif %}</td>
+                    <td class="num">{% if movimiento.abono %}${{ movimiento.abono|floatformat:2 }}{% else %}-{% endif %}</td>
+                    <td class="num">{% if movimiento.saldo %}${{ movimiento.saldo|floatformat:2 }}{% else %}-{% endif %}</td>
+                    <td>
+                      <input type="hidden" name="movimiento_id" value="{{ movimiento.id }}" />
+                      <select
+                        name="categoria_{{ movimiento.id }}"
+                        class="select-input"
+                        {% if not categorias %}disabled{% endif %}
+                      >
+                        <option value="">Seleccionar categoría</option>
+                        {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}">{{ categoria.nombre }} · {{ categoria.tipo }}</option>
+                        {% endfor %}
+                      </select>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="6" class="empty-row">Todos tus movimientos están categorizados.</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card-header" style="margin-top: 32px">
+              <div>
+                <p class="eyebrow">Clasificados</p>
+                <h2>Movimientos con categoría</h2>
+                <p class="helper-text">Puedes actualizar la categoría si es necesario.</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="classification-table">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Descripción</th>
+                    <th>Cargo</th>
+                    <th>Abono</th>
+                    <th>Saldo</th>
+                    <th>Categoría</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for movimiento in movimientos_categorizados %}
+                  <tr>
+                    <td>{{ movimiento.fecha|date:"d-m-Y" }}</td>
+                    <td class="desc">{{ movimiento.descripcion }}</td>
+                    <td class="num">{% if movimiento.cargo %}${{ movimiento.cargo|floatformat:2 }}{% else %}-{% endif %}</td>
+                    <td class="num">{% if movimiento.abono %}${{ movimiento.abono|floatformat:2 }}{% else %}-{% endif %}</td>
+                    <td class="num">{% if movimiento.saldo %}${{ movimiento.saldo|floatformat:2 }}{% else %}-{% endif %}</td>
+                    <td>
+                      <input type="hidden" name="movimiento_id" value="{{ movimiento.id }}" />
+                      <select
+                        name="categoria_{{ movimiento.id }}"
+                        class="select-input"
+                        {% if not categorias %}disabled{% endif %}
+                      >
+                        <option value="">Sin categoría</option>
+                        {% for categoria in categorias %}
+                        <option
+                          value="{{ categoria.id }}"
+                          {% if movimiento.categoria_id == categoria.id %}selected{% endif %}
+                        >
+                          {{ categoria.nombre }} · {{ categoria.tipo }}
+                        </option>
+                        {% endfor %}
+                      </select>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="6" class="empty-row">Aún no tienes movimientos en este rango.</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="form-actions spaced">
+              <a href="{% url 'pagina_principal' %}" class="ghost-button">Volver al panel</a>
+              <button
+                type="submit"
+                class="btn-primary"
+                {% if not categorias %}disabled title="Crea categorías primero"{% endif %}
+              >
+                Guardar cambios
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

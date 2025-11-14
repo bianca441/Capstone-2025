@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clasificar movimientos - Mi Bolsillo</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon-32x32.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/subir_cartola.css' %}" />
+  </head>
+  <body>
+    <div class="app-shell">
+      {% include 'includes/sidebar.html' with active='subir' %}
+
+      <main class="main-content">
+        <header class="page-header">
+          <div>
+            <p class="eyebrow">Paso 2 · Clasificación</p>
+            <h1>Clasifica tus movimientos</h1>
+            <p class="intro">
+              Archivo <strong>{{ archivo }}</strong> | Cuenta <strong>{{ cuenta.nombre_identificador }}</strong>
+            </p>
+          </div>
+          <div class="page-header-actions">
+            <div class="badge-info">
+              Movimientos clasificados: {{ clasificados }} / {{ total_movimientos }}
+            </div>
+            <div class="user-pill">
+              <img src="{{ profile_avatar_url }}" alt="Foto de {{ request.user.username }}" class="avatar avatar-sm" />
+              <span>{{ request.user.username }}</span>
+            </div>
+          </div>
+        </header>
+
+        {% if messages %}
+        <div class="alert-stack">
+          {% for message in messages %}
+          <div class="alert {{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <section class="card upload-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Movimientos recientes</p>
+              <h2>Asigna una categoría</h2>
+              <p class="helper-text">
+                Usa las categorías para preparar tus reportes. Puedes ajustar esta información más adelante desde el
+                dashboard.
+              </p>
+            </div>
+            {% if not categorias %}
+            <div class="badge-warning">
+              No tienes categorías creadas. <a href="{% url 'categorias_create' %}">Crea la primera</a> antes de
+              clasificar.
+            </div>
+            {% endif %}
+          </div>
+
+          <form method="POST" action="{% url 'guardar_categorias' %}">
+            {% csrf_token %}
+            <div class="table-responsive">
+              <table class="classification-table">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Descripción</th>
+                    <th>Cargo</th>
+                    <th>Abono</th>
+                    <th>Saldo</th>
+                    <th>Categoría</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for movimiento in page_obj %}
+                  <tr>
+                    <td>{{ movimiento.fecha|date:"d-m-Y" }}</td>
+                    <td class="desc">{{ movimiento.descripcion }}</td>
+                    <td class="num">{% if movimiento.cargo %}${{ movimiento.cargo|floatformat:2 }}{% else %}-{% endif %}</td>
+                    <td class="num">{% if movimiento.abono %}${{ movimiento.abono|floatformat:2 }}{% else %}-{% endif %}</td>
+                    <td class="num">{% if movimiento.saldo %}${{ movimiento.saldo|floatformat:2 }}{% else %}-{% endif %}</td>
+                    <td>
+                      <input type="hidden" name="movimiento_id" value="{{ movimiento.id }}" />
+                      <select
+                        name="categoria_{{ movimiento.id }}"
+                        class="select-input"
+                        {% if not categorias %}disabled{% endif %}
+                      >
+                        <option value="">Sin categoría</option>
+                        {% for categoria in categorias %}
+                        <option
+                          value="{{ categoria.id }}"
+                          {% if movimiento.categoria_id == categoria.id %}selected{% endif %}
+                        >
+                          {{ categoria.nombre }} · {{ categoria.tipo }}
+                        </option>
+                        {% endfor %}
+                      </select>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="6" class="empty-row">No hay movimientos para clasificar.</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pagination">
+              {% if page_obj.has_previous %}
+              <a href="?page={{ page_obj.previous_page_number }}" class="page-link">Anterior</a>
+              {% else %}
+              <span class="page-link disabled">Anterior</span>
+              {% endif %}
+
+              <span class="page-info">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+
+              {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}" class="page-link">Siguiente</a>
+              {% else %}
+              <span class="page-link disabled">Siguiente</span>
+              {% endif %}
+            </div>
+
+            <div class="form-actions spaced">
+              <a href="{% url 'pagina_principal' %}" class="ghost-button">Omitir por ahora</a>
+              <button
+                type="submit"
+                class="btn-primary"
+                {% if not categorias %}disabled title="Debes crear al menos una categoría"{% endif %}
+              >
+                Guardar categorías
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
