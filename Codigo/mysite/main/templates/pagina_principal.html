@@ -140,19 +140,21 @@
 
 <body>
 
-    {% if messages %}
-
-    <div class="messages">
-
-        {% for message in messages %}
-
-            <div class="{{ message.tags }}">{{ message }}</div>
-
-        {% endfor %}
-
+{% if messages %}
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <h2>Notificación</h2>
+            <div class="message-list">
+                {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" id="closeMessageModal">Entendido</button>
+            </div>
+        </div>
     </div>
-
-    {% endif %}
+{% endif %}
 
 
 
@@ -619,7 +621,7 @@
 
     <script>
 
-        // Datos para grÃ¡ficos inyectados desde Django (Supabase vÃ­a ORM)
+        // Datos para grÃ¡ficos inyectados desde Django (Supabase vi­a ORM)
 
         const labels = {{ chart_labels_json|safe }};
 
@@ -1099,31 +1101,61 @@
 
         const confirmLogout = document.getElementById('confirmLogout');
 
+        const messageModal = document.getElementById('messageModal');
 
-
-        logoutLink.addEventListener('click', (e) => {
-
-            e.preventDefault();
-
-            logoutModal.style.display = 'flex';
-
-        });
+        const closeMessageModal = document.getElementById('closeMessageModal');
 
 
 
-        cancelLogout.addEventListener('click', () => {
+        if (logoutLink) {
 
-            logoutModal.style.display = 'none';
+            logoutLink.addEventListener('click', (e) => {
 
-        });
+                e.preventDefault();
+
+                logoutModal.style.display = 'flex';
+
+            });
+
+        }
 
 
 
-        confirmLogout.addEventListener('click', () => {
+        if (cancelLogout) {
 
-            window.location.href = "{% url 'logout' %}";
+            cancelLogout.addEventListener('click', () => {
 
-        });
+                logoutModal.style.display = 'none';
+
+            });
+
+        }
+
+
+
+        if (confirmLogout) {
+
+            confirmLogout.addEventListener('click', () => {
+
+                window.location.href = "{% url 'logout' %}";
+
+            });
+
+        }
+
+
+
+        if (messageModal && closeMessageModal) {
+
+            messageModal.style.display = 'flex';
+
+            closeMessageModal.addEventListener('click', () => {
+
+                messageModal.style.display = 'none';
+
+            });
+
+        }
 
 
 
@@ -1134,6 +1166,12 @@
             if (e.target === logoutModal) {
 
                 logoutModal.style.display = 'none';
+
+            }
+
+            if (messageModal && e.target === messageModal) {
+
+                messageModal.style.display = 'none';
 
             }
 
