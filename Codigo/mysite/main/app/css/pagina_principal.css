@@ -4,18 +4,26 @@
     box-sizing: border-box;
 }
 
+:root {
+    --primary-dark: #003a70;
+    --primary: #005fa4;
+    --primary-accent: #1d4ed8;
+    --primary-light: #dbeafe;
+    --page-background: #e6efff;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
     display: flex;
     height: 100vh;
-    background: #ecfdf5;
+    background: var(--page-background);
     overflow: hidden;
 }
 
 /* Sidebar */
 .sidebar {
     width: 260px;
-    background: linear-gradient(180deg, #065f46 0%, #059669 100%);
+    background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
     color: white;
     display: flex;
     flex-direction: column;
@@ -118,7 +126,7 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #10b981;
+    background: var(--primary-accent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -149,7 +157,7 @@ body {
 }
 
 .date-filters label {
-    color: #065f46;
+    color: var(--primary-dark);
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -164,7 +172,7 @@ body {
 }
 
 .date-filters .btn-apply {
-    background: #10b981;
+    background: var(--primary-accent);
     color: white;
     border: none;
     border-radius: 8px;
@@ -173,7 +181,7 @@ body {
 }
 
 .date-filters .btn-clear {
-    color: #059669;
+    color: var(--primary);
     text-decoration: none;
     padding: 8px 10px;
 }
@@ -222,8 +230,8 @@ body {
 .movements-table th {
     text-align: left;
     font-weight: 600;
-    color: #065f46;
-    background: #d1fae5;
+    color: var(--primary-dark);
+    background: var(--primary-light);
     padding: 12px;
     border-bottom: 1px solid #e5e7eb;
 }
@@ -235,7 +243,7 @@ body {
 }
 
 .monto-positivo {
-    color: #10b981;
+    color: var(--primary-accent);
     font-weight: 600;
 }
 
@@ -245,7 +253,7 @@ body {
 }
 
 .card-balance {
-    background: linear-gradient(135deg, #047857 0%, #10b981 100%);
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-accent) 100%);
     color: white;
 }
 
@@ -275,7 +283,7 @@ body {
 }
 
 .card-income {
-    color: #10b981;
+    color: var(--primary-accent);
 }
 
 .card-expenses {
