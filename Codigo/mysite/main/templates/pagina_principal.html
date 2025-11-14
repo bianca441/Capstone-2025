@@ -261,8 +261,7 @@
                             {% for cuenta in cuentas_usuario %}
 
                             <option value="{{ cuenta.id }}" {% if cuenta_actual == cuenta.id|stringformat:"s" %}selected{% endif %}>
-
-                                {{ cuenta.nombre_identificador }} ï¿½ {{ cuenta.banco }}
+                                {{ cuenta.nombre_identificador }}
 
                             </option>
 
@@ -502,11 +501,11 @@
 
                                 <th>Descripcion</th>
 
+                                <th>Categoria</th>
+
                                 <th class="num">Abono</th>
 
                                 <th class="num">Cargo</th>
-
-                                <th class="num">Saldo</th>
 
                             </tr>
 
@@ -524,6 +523,8 @@
 
                                     <td class="desc">{{ m.descripcion }}</td>
 
+                                    <td>{{ m.categoria.nombre|default:"Sin categoria" }}</td>
+
                                     <td class="num {% if m.abono and m.abono > 0 %}monto-positivo{% endif %}">
 
                                         {% if m.abono %}${{ m.abono|floatformat:0|dot_thousands }}{% else %}-{% endif %}
@@ -535,8 +536,6 @@
                                         {% if m.cargo %}${{ m.cargo|floatformat:0|dot_thousands }}{% else %}-{% endif %}
 
                                     </td>
-
-                                    <td class="num">${{ m.saldo|default_if_none:0|floatformat:0|dot_thousands }}</td>
 
                                 </tr>
 

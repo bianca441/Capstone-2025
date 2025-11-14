@@ -58,19 +58,21 @@ def pagina_principal(request):
 
     def saldo_desde_cuentas(cuentas, fecha_limite=None):
         total = Decimal('0')
-        count = 0
+        tiene_cuentas = False
         for cuenta in cuentas:
-            count += 1
+            tiene_cuentas = True
+            saldo_base = Decimal(cuenta.saldo_inicial or 0)
             movs = cuenta.movimientos.all()
             if fecha_limite is not None:
                 movs = movs.filter(fecha__lt=fecha_limite)
-            mov = movs.order_by('-fecha', '-id').first()
-            if mov and mov.saldo is not None:
-                total += Decimal(mov.saldo)
-            else:
-                saldo_base = cuenta.saldo_inicial if cuenta.saldo_inicial is not None else Decimal('0')
-                total += Decimal(saldo_base)
-        return total if count else None
+            agregados = movs.aggregate(
+                total_cargos=Sum('cargo'),
+                total_abonos=Sum('abono')
+            )
+            cargos = Decimal(agregados['total_cargos'] or 0)
+            abonos = Decimal(agregados['total_abonos'] or 0)
+            total += saldo_base - cargos + abonos
+        return total if tiene_cuentas else None
 
     saldo_actual_decimal = saldo_desde_cuentas([cuenta_seleccionada]) if cuenta_seleccionada else saldo_desde_cuentas(cuentas_usuario)
     if saldo_actual_decimal is None:
