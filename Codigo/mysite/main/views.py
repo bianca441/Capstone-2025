@@ -2,16 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth import logout
-from django.core.files.storage import FileSystemStorage
+from django.core.files.storage import FileSystemStorage, default_storage
 import os
 import pandas as pd
-from .models import Movimiento
+from .models import Movimiento, DEFAULT_PROFILE_IMAGE
 from datetime import datetime, date, timedelta
 from django.db.models import Sum
 import json
 from django.contrib.auth.decorators import login_required
-from .forms import PerfilForm, UserForm
+from .forms import PerfilForm, UserForm, ProfileImageForm
 from .models import Perfil
 
 # --- PÁGINAS BASE ---
@@ -251,25 +250,67 @@ def subir_cartola(request):
 
 @login_required
 def configuracion(request):
-    perfil, created = Perfil.objects.get_or_create(user=request.user)
+    perfil, _ = Perfil.objects.get_or_create(user=request.user)
 
-    if request.method == 'POST':
+    if request.method == 'POST' and request.POST.get('form_type') == 'profile-data':
         user_form = UserForm(request.POST, instance=request.user)
-        perfil_form = PerfilForm(request.POST, request.FILES, instance=perfil)
+        perfil_form = PerfilForm(request.POST, instance=perfil)
 
         if user_form.is_valid() and perfil_form.is_valid():
             user_form.save()
             perfil_form.save()
+            messages.success(request, 'Tu perfil se actualizó correctamente.')
             return redirect('configuracion')
+        else:
+            messages.error(request, 'Revisa los campos resaltados e intenta nuevamente.')
     else:
         user_form = UserForm(instance=request.user)
         perfil_form = PerfilForm(instance=perfil)
 
+    image_form = ProfileImageForm(instance=perfil)
+
     return render(request, 'configuracion.html', {
         'user_form': user_form,
         'perfil_form': perfil_form,
+        'image_form': image_form,
     })
 
-    return render(request, 'configuracion.html')
+
+@login_required
+def editar_perfil_view(request):
+    perfil, _ = Perfil.objects.get_or_create(user=request.user)
+
+    if request.method != 'POST':
+        return redirect('configuracion')
+
+    form = ProfileImageForm(request.POST, request.FILES, instance=perfil)
+    if 'profile_image' not in request.FILES:
+        messages.error(request, 'Selecciona una imagen JPG o PNG válida.')
+        return redirect('configuracion')
+
+    if form.is_valid():
+        old_image_name = perfil.profile_image.name if perfil.profile_image else None
+
+        try:
+            form.save()
+            if (
+                old_image_name
+                and old_image_name != DEFAULT_PROFILE_IMAGE
+                and old_image_name != perfil.profile_image.name
+                and default_storage.exists(old_image_name)
+            ):
+                default_storage.delete(old_image_name)
+            messages.success(request, 'Actualizaste tu foto de perfil.')
+        except Exception as exc:
+            messages.error(request, f'No pudimos guardar la imagen: {exc}')
+    else:
+        error_list = form.errors.get('profile_image')
+        if error_list:
+            messages.error(request, ' '.join(error_list))
+        else:
+            messages.error(request, 'La imagen no es válida.')
+
+    return redirect('configuracion')
+
 
 

@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 
     # Aplicación principal
-    'main',
+    'main.apps.MainConfig',
 ]
 
 
@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'main.context_processors.profile_context',
             ],
         },
     },

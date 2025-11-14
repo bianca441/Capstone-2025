@@ -1,35 +1,195 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cargar Cartola Bancaria</title>
-    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
-    <link rel="stylesheet" href="{% static 'css/formulario.css' %}">
-</head>
-<body>
-    <div class="container">
-        <h1>📊 Subir Cartola Bancaria</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subir Cartola - Mi Bolsillo</title>
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="{% static 'img/favicon-32x32.png' %}"
+    />
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/subir_cartola.css' %}" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="logo">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>Mi Bolsillo</span>
+        </div>
+        <nav class="nav-menu">
+          <a href="{% url 'pagina_principal' %}" class="nav-item">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            </svg>
+            <span>Inicio</span>
+          </a>
+          <a href="#" class="nav-item">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+              <line x1="1" y1="10" x2="23" y2="10" />
+            </svg>
+            <span>Cuentas</span>
+          </a>
+          <a href="#" class="nav-item">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="12" y1="1" x2="12" y2="23" />
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+            <span>Movimientos</span>
+          </a>
+          <a href="{% url 'subir_cartola' %}" class="nav-item active">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M4 4v16h16V4H4zm8 4v8m4-4H8" />
+            </svg>
+            <span>Subir cartola</span>
+          </a>
+          <a href="{% url 'configuracion' %}" class="nav-item">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.5"
+              />
+            </svg>
+            <span>Configuracion</span>
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="{% url 'logout' %}" class="logout-btn">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            <span>Cerrar sesion</span>
+          </a>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="page-header">
+          <div>
+            <p class="eyebrow">Operaciones</p>
+            <h1>Subir cartola bancaria</h1>
+            <p class="intro">
+              Carga tus archivos Excel para mantener el panel actualizado con los
+              ultimos movimientos.
+            </p>
+          </div>
+          <div class="page-header-actions">
+            <a href="{% url 'pagina_principal' %}" class="ghost-button">
+              Volver al panel
+            </a>
+            <div class="user-pill">
+              <img
+                src="{{ profile_avatar_url }}"
+                alt="Foto de {{ request.user.username }}"
+                class="avatar avatar-sm"
+              />
+              <span>{{ request.user.username }}</span>
+            </div>
+          </div>
+        </header>
 
         {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li class="{{ message.tags }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
+        <div class="alert-stack">
+          {% for message in messages %}
+          <div class="alert {{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        </div>
         {% endif %}
 
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="archivo_excel">Selecciona tu archivo Excel:</label>
-                <input type="file" name="archivo_excel" id="archivo_excel" accept=".xlsx,.xls" required>
+        <section class="card upload-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Cartolas bancarias</p>
+              <h2>Carga de archivos</h2>
+              <p class="helper-text">
+                Aceptamos archivos XLSX o XLS de hasta 5 MB. Los datos se procesan
+                de forma segura.
+              </p>
             </div>
-            <button type="submit" class="btn">Subir archivo</button>
-        </form>
+          </div>
 
-        <a href="{% url 'pagina_principal' %}" class="volver">⬅ Volver al Panel</a>
+          <form
+            method="POST"
+            enctype="multipart/form-data"
+            class="upload-form"
+          >
+            {% csrf_token %}
+            <label for="archivo_excel" class="field-label"
+              >Selecciona el archivo Excel</label
+            >
+            <div class="file-input">
+              <input
+                type="file"
+                name="archivo_excel"
+                id="archivo_excel"
+                accept=".xlsx,.xls"
+                required
+              />
+              <span class="file-hint">Arrastra y suelta o haz clic</span>
+            </div>
+            <button type="submit" class="btn-primary">Subir cartola</button>
+          </form>
+
+          <div class="tips">
+            <h3>Recomendaciones</h3>
+            <ul>
+              <li>Verifica que las columnas tengan encabezados claros.</li>
+              <li>Manten una hoja por archivo para acelerar el proceso.</li>
+              <li>Asegurate de que no existan totales manuales al final.</li>
+            </ul>
+          </div>
+        </section>
+      </main>
     </div>
-</body>
+  </body>
 </html>

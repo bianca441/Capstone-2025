@@ -103,37 +103,15 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.search-bar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #f0f2f5;
-    padding: 12px 20px;
-    border-radius: 8px;
-    width: 400px;
-}
-
-.search-bar svg {
-    color: #6b7280;
-}
-
-.search-bar input {
-    border: none;
-    background: transparent;
-    outline: none;
-    flex: 1;
-    font-size: 15px;
+.user-name {
+    font-weight: 500;
+    color: #1f2937;
 }
 
 .user-profile {
     display: flex;
     align-items: center;
     gap: 12px;
-}
-
-.user-name {
-    font-weight: 500;
-    color: #1f2937;
 }
 
 .user-avatar {
@@ -418,11 +396,6 @@ body {
     .nav-item span,
     .logout-btn span {
         display: none;
-    }
-
-    .search-bar {
-        width: auto;
-        flex: 1;
     }
 
     .user-name {
