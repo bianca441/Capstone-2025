@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from django.core.exceptions import ImproperlyConfigured
+import google.generativeai as genai
 
 # --- BASE DIR ---
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -155,3 +156,9 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+
+# API KEY de Gemini en Django 
+genai.configure(api_key="AIzaSyCVK5BUF0ekzh3iw_MOeVNPt2Zcb3Wilr4") # AQUI_TU_API_KEY
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyCVK5BUF0ekzh3iw_MOeVNPt2Zcb3Wilr4")

@@ -721,5 +721,40 @@ def editar_perfil_view(request):
 
     return redirect('configuracion')
 
+# Lo que envia el usuario y lo que responde Gemini
+
+from django.http import JsonResponse
+import google.generativeai as genai
+from django.conf import settings
+
+# Configurar clave
+genai.configure(api_key=settings.GEMINI_API_KEY)
+
+# Prompt del sistema
+SYSTEM_PROMPT = """
+Eres un asistente virtual llamado “Asistente Tu Bolsillo”.
+Tu función es ayudar a los usuarios a entender y organizar sus finanzas personales.
+Habla de forma clara, amable y profesional.
+Puedes explicar conceptos financieros simples, dar recomendaciones generales de ahorro,
+interpretar gastos, analizar patrones financieros y guiar al usuario dentro de la plataforma.
+Nunca des consejos legales o contables profesionales.
+Responde siempre en español, de forma breve y útil.
+"""
+
+def chat_gemini(request):
+    # 👉 Recibe el texto del usuario que viene desde JavaScript
+    prompt = request.GET.get("prompt", "")
+
+    # Crear el modelo con el prompt del sistema
+    model = genai.GenerativeModel(
+        "gemini-1.5-flash",
+        system_instruction=SYSTEM_PROMPT
+    )
+
+    # Generar respuesta con el texto recibido
+    response = model.generate_content(prompt)
+
+    return JsonResponse({"response": response.text})
+
 
 
