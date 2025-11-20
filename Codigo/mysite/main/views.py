@@ -18,6 +18,9 @@ from .forms import PerfilForm, UserForm, ProfileImageForm, CuentaBancoForm, Cate
 
 logger = logging.getLogger(__name__)
 
+CHAT_HISTORY_SESSION_KEY = "chat_gemini_history"
+CHAT_HISTORY_MAX_MESSAGES = 20
+
 # --- PÁGINAS BASE ---
 def index(request):
     return render(request, 'index.html')
@@ -874,6 +877,33 @@ def _safe_extract_response_text(response):
     return "\n".join(fragments).strip()
 
 
+def _build_history_block(history):
+    """Convierte la historia guardada en un texto entendible para el modelo."""
+    if not history:
+        return ""
+
+    lines = ["Historial previo de esta conversación (usuario vs asistente):"]
+    for entry in history:
+        role = entry.get("role", "usuario")
+        message = entry.get("message", "").strip()
+        if not message:
+            continue
+        etiqueta = "Usuario" if role == "user" else "Asistente"
+        lines.append(f"- {etiqueta}: {message}")
+    return "\n".join(lines)
+
+
+def _update_history(session, prompt, answer):
+    """Guarda los turnos en la sesión hasta completar el máximo permitido."""
+    history = list(session.get(CHAT_HISTORY_SESSION_KEY, []))
+    history.append({"role": "user", "message": prompt})
+    history.append({"role": "assistant", "message": answer})
+    if len(history) > CHAT_HISTORY_MAX_MESSAGES:
+        history = history[-CHAT_HISTORY_MAX_MESSAGES:]
+    session[CHAT_HISTORY_SESSION_KEY] = history
+    session.modified = True
+
+
 @login_required
 def chat_gemini(request):
     prompt = request.GET.get("prompt", "").strip()
@@ -894,12 +924,16 @@ def chat_gemini(request):
             "El usuario actual no ha iniciado sesion, asi que solo puedes entregar orientaciones generales."
         )
 
+    history = list(request.session.get(CHAT_HISTORY_SESSION_KEY, []))
+    history_block = _build_history_block(history)
+    conversation_prefix = f"{history_block}\n\n" if history_block else ""
+
     model = genai.GenerativeModel(
         DEFAULT_GEMINI_MODEL,
         system_instruction=SYSTEM_PROMPT
     )
 
-    composed_prompt = f"{context_block}\n\nPregunta del usuario: {prompt}"
+    composed_prompt = f"{context_block}\n\n{conversation_prefix}Pregunta del usuario: {prompt}"
 
     try:
         response = model.generate_content(composed_prompt)
@@ -907,6 +941,8 @@ def chat_gemini(request):
     except Exception as exc:
         logger.warning("Error al consultar Gemini: %s", exc)
         answer = "No puedo conectarme con el asistente por ahora. Intentalo nuevamente en unos minutos."
+
+    _update_history(request.session, prompt, answer)
 
     return JsonResponse({"response": answer})
 
