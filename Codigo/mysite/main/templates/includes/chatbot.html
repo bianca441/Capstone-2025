@@ -1,0 +1,152 @@
+<!-- Chatbot Flotante Tu Bolsillo -->
+<div id="chatbot-button" role="button" aria-label="Abrir asistente" style="
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 65px;
+    height: 65px;
+    background: #4f46e5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    z-index: 9999;
+">
+    <span style="font-size: 30px; color: white;">&#128172;</span>
+</div>
+
+<!-- Ventana del Chat -->
+<div id="chatbot-window" style="
+    position: fixed;
+    bottom: 100px;
+    right: 25px;
+    width: 350px;
+    height: 450px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 9999;
+">
+    <div style="
+        background: #4f46e5;
+        padding: 15px;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    ">
+        Asistente Tu Bolsillo
+        <button id="close-chat" type="button" aria-label="Cerrar chat" style="
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+        ">&times;</button>
+    </div>
+
+    <div id="chat-content" style="
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        background: #f3f4f6;
+    "></div>
+
+    <div style="padding: 10px; background: white; border-top: 1px solid #ddd;">
+        <div style="display: flex; gap: 10px;">
+            <input id="chat-input" type="text" placeholder="Escribe tu mensaje..."
+                style="flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #ccc;">
+            <button id="chat-send" type="button" style="
+                padding: 10px 15px;
+                background: #4f46e5;
+                color: white;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                font-weight: 600;
+            ">Enviar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const chatBtn = document.getElementById("chatbot-button");
+    const chatWin = document.getElementById("chatbot-window");
+    const closeBtn = document.getElementById("close-chat");
+    const input = document.getElementById("chat-input");
+    const sendBtn = document.getElementById("chat-send");
+    const chatContent = document.getElementById("chat-content");
+
+    if (!chatBtn || !chatWin || !closeBtn || !input || !sendBtn || !chatContent) {
+        return;
+    }
+
+    chatBtn.addEventListener("click", () => {
+        chatWin.style.display = "flex";
+        input.focus();
+    });
+
+    closeBtn.addEventListener("click", () => {
+        chatWin.style.display = "none";
+    });
+
+    async function sendFloatingMessage() {
+        const msg = input.value.trim();
+        if (!msg) return;
+
+        addFloatingMsg("user", msg);
+        input.value = "";
+        input.focus();
+
+        try {
+            const res = await fetch(`/chat_gemini/?prompt=${encodeURIComponent(msg)}`);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            const data = await res.json();
+            const reply = data.response || "No pude generar una respuesta.";
+            addFloatingMsg("bot", reply);
+        } catch (error) {
+            console.error("Chatbot error", error);
+            addFloatingMsg("bot", "No pude conectar con el asistente. Intenta nuevamente en unos minutos.");
+        }
+    }
+
+    function addFloatingMsg(type, text) {
+        const div = document.createElement("div");
+        div.style.padding = "10px 14px";
+        div.style.margin = "10px 0";
+        div.style.borderRadius = "12px";
+        div.style.maxWidth = "80%";
+        div.style.wordWrap = "break-word";
+
+        if (type === "user") {
+            div.style.background = "#dbeafe";
+            div.style.marginLeft = "auto";
+            div.style.textAlign = "right";
+        } else {
+            div.style.background = "white";
+            div.style.border = "1px solid #ddd";
+        }
+
+        div.textContent = text;
+        chatContent.appendChild(div);
+        chatContent.scrollTop = chatContent.scrollHeight;
+    }
+
+    sendBtn.addEventListener("click", sendFloatingMessage);
+    input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            sendFloatingMessage();
+        }
+    });
+})();
+</script>

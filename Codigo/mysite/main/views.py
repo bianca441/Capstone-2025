@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage, default_storage
 from django.core.paginator import Paginator
 import os
+import logging
 import pandas as pd
 from .models import Movimiento, DEFAULT_PROFILE_IMAGE, CuentaBanco, Perfil, CategoriaGasto
 from datetime import datetime, date, timedelta
@@ -14,6 +15,8 @@ from django.db.models.functions import TruncMonth
 import json
 from django.contrib.auth.decorators import login_required
 from .forms import PerfilForm, UserForm, ProfileImageForm, CuentaBancoForm, CategoriaGastoForm
+
+logger = logging.getLogger(__name__)
 
 # --- PÁGINAS BASE ---
 def index(request):
@@ -729,32 +732,183 @@ from django.conf import settings
 
 # Configurar clave
 genai.configure(api_key=settings.GEMINI_API_KEY)
+DEFAULT_GEMINI_MODEL = getattr(settings, "GEMINI_MODEL_ID", "gemini-2.5-flash")
 
 # Prompt del sistema
 SYSTEM_PROMPT = """
-Eres un asistente virtual llamado “Asistente Tu Bolsillo”.
-Tu función es ayudar a los usuarios a entender y organizar sus finanzas personales.
+Eres un asistente virtual llamado "Asistente Tu Bolsillo".
+Tu funcion es ayudar a los usuarios a entender y organizar sus finanzas personales y el uso de la plataforma.
 Habla de forma clara, amable y profesional.
 Puedes explicar conceptos financieros simples, dar recomendaciones generales de ahorro,
 interpretar gastos, analizar patrones financieros y guiar al usuario dentro de la plataforma.
 Nunca des consejos legales o contables profesionales.
-Responde siempre en español, de forma breve y útil.
+Siempre responde en espanol, de forma breve y util.
+Cuando recibas contexto financiero, usalo como unica fuente de datos y avisa si falta informacion para responder.
 """
 
-def chat_gemini(request):
-    # 👉 Recibe el texto del usuario que viene desde JavaScript
-    prompt = request.GET.get("prompt", "")
 
-    # Crear el modelo con el prompt del sistema
+def _format_currency(value):
+    """Formatea valores decimales para que el modelo los entienda."""
+    monto = Decimal(value or 0)
+    return f"${monto:,.2f}"
+
+
+def _build_user_financial_context(user):
+    """Construye un resumen textual con la data financiera del usuario."""
+    lines = []
+    nombre = (user.get_full_name() or "").strip() or user.username
+    lines.append(f"Usuario: {nombre}")
+
+    perfil = getattr(user, 'perfil', None)
+    if perfil:
+        if perfil.ciudad:
+            lines.append(f"Ciudad registrada: {perfil.ciudad}")
+        if perfil.telefono:
+            lines.append(f"Telefono registrado: {perfil.telefono}")
+
+    cuentas_qs = (
+        CuentaBanco.objects.filter(usuario=user)
+        .annotate(
+            total_abonos=Sum('movimientos__abono'),
+            total_cargos=Sum('movimientos__cargo'),
+        )
+        .order_by('nombre_identificador')
+    )
+
+    saldo_total = Decimal('0')
+    if cuentas_qs.exists():
+        lines.append("Cuentas bancarias y saldos aproximados:")
+        for cuenta in cuentas_qs:
+            saldo_cuenta = (
+                Decimal(cuenta.saldo_inicial or 0)
+                - Decimal(cuenta.total_cargos or 0)
+                + Decimal(cuenta.total_abonos or 0)
+            )
+            saldo_total += saldo_cuenta
+            lines.append(f"- {cuenta.nombre_identificador} / {cuenta.banco}: {_format_currency(saldo_cuenta)}")
+        lines.append(f"Saldo consolidado estimado: {_format_currency(saldo_total)}")
+    else:
+        lines.append("El usuario aun no registra cuentas bancarias en la plataforma.")
+
+    hoy = date.today()
+    movimientos_mes = Movimiento.objects.filter(
+        usuario=user,
+        fecha__year=hoy.year,
+        fecha__month=hoy.month,
+    )
+    ingresos_mes = Decimal(movimientos_mes.aggregate(total=Sum('abono'))['total'] or 0)
+    gastos_mes = Decimal(movimientos_mes.aggregate(total=Sum('cargo'))['total'] or 0)
+    lines.append(
+        f"Resumen del mes actual: ingresos {_format_currency(ingresos_mes)} y gastos {_format_currency(gastos_mes)}."
+    )
+
+    top_gastos = list(
+        movimientos_mes.filter(cargo__gt=0, categoria__isnull=False)
+        .values('categoria__nombre')
+        .annotate(total=Sum('cargo'))
+        .order_by('-total')[:3]
+    )
+    if top_gastos:
+        lines.append("Categorias con mayor gasto este mes:")
+        for cat in top_gastos:
+            lines.append(f"- {cat['categoria__nombre']}: {_format_currency(cat['total'])}")
+
+    top_ingresos = list(
+        movimientos_mes.filter(abono__gt=0, categoria__isnull=False)
+        .values('categoria__nombre')
+        .annotate(total=Sum('abono'))
+        .order_by('-total')[:3]
+    )
+    if top_ingresos:
+        lines.append("Categorias con mayor ingreso este mes:")
+        for cat in top_ingresos:
+            lines.append(f"- {cat['categoria__nombre']}: {_format_currency(cat['total'])}")
+
+    ultimos = (
+        Movimiento.objects.filter(usuario=user)
+        .select_related('categoria', 'cuenta')
+        .order_by('-fecha', '-id')[:5]
+    )
+    if ultimos:
+        lines.append("Ultimos movimientos registrados:")
+        for mov in ultimos:
+            if mov.abono:
+                monto = mov.abono
+                tipo = "Ingreso"
+            elif mov.cargo:
+                monto = mov.cargo
+                tipo = "Gasto"
+            elif mov.saldo:
+                monto = mov.saldo
+                tipo = "Saldo informado"
+            else:
+                monto = Decimal('0')
+                tipo = "Movimiento sin monto"
+
+            categoria = mov.categoria.nombre if mov.categoria else "Sin categoria"
+            cuenta = mov.cuenta.nombre_identificador if mov.cuenta else "Cuenta no especificada"
+            lines.append(
+                f"- {mov.fecha.strftime('%Y-%m-%d')}: {mov.descripcion} -> {tipo} {_format_currency(monto)} en {categoria} ({cuenta})"
+            )
+    else:
+        lines.append("El usuario todavia no carga movimientos historicos.")
+
+    return "\n".join(lines)
+
+
+def _safe_extract_response_text(response):
+    """Intenta obtener texto sin importar el formato de retorno del modelo."""
+    text = getattr(response, "text", None)
+    if text:
+        return text.strip()
+
+    fragments = []
+    for candidate in getattr(response, "candidates", []):
+        content = getattr(candidate, "content", None)
+        if not content:
+            continue
+        for part in getattr(content, "parts", []):
+            fragment = getattr(part, "text", "")
+            if fragment:
+                fragments.append(fragment)
+    return "\n".join(fragments).strip()
+
+
+@login_required
+def chat_gemini(request):
+    prompt = request.GET.get("prompt", "").strip()
+    if not prompt:
+        return JsonResponse(
+            {"response": "Necesito que escribas una pregunta para poder ayudarte."},
+            status=400,
+        )
+
+    if request.user.is_authenticated:
+        context_block = (
+            "Contexto financiero del usuario (extraido de la base de datos):\n"
+            f"{_build_user_financial_context(request.user)}\n"
+            "Usa unicamente estos datos para tus conclusiones."
+        )
+    else:
+        context_block = (
+            "El usuario actual no ha iniciado sesion, asi que solo puedes entregar orientaciones generales."
+        )
+
     model = genai.GenerativeModel(
-        "gemini-1.5-flash",
+        DEFAULT_GEMINI_MODEL,
         system_instruction=SYSTEM_PROMPT
     )
 
-    # Generar respuesta con el texto recibido
-    response = model.generate_content(prompt)
+    composed_prompt = f"{context_block}\n\nPregunta del usuario: {prompt}"
 
-    return JsonResponse({"response": response.text})
+    try:
+        response = model.generate_content(composed_prompt)
+        answer = _safe_extract_response_text(response) or "No pude generar una respuesta en este momento."
+    except Exception as exc:
+        logger.warning("Error al consultar Gemini: %s", exc)
+        answer = "No puedo conectarme con el asistente por ahora. Intentalo nuevamente en unos minutos."
+
+    return JsonResponse({"response": answer})
 
 
 

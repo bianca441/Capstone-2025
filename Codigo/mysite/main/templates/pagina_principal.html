@@ -1179,6 +1179,10 @@
 
     </script>
 
+    {% if user.is_authenticated %}
+      {% include 'includes/chatbot.html' %}
+    {% endif %}
+
 </body>
 
 </html>

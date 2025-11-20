@@ -11,8 +11,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 dotenv_path = BASE_DIR / ".env"
 load_dotenv(dotenv_path)
 
-print("✅ Archivo .env cargado desde:", dotenv_path)
-print("🔗 DATABASE_URL detectado:", os.getenv("DATABASE_URL"))
+print("Archivo .env cargado desde:", dotenv_path)
+print("DATABASE_URL detectado:", os.getenv("DATABASE_URL"))
 
 # --- SEGURIDAD ---
 SECRET_KEY = 'django-insecure-x_^%@zssl7i#8sp$2e^j$_ydw^#x)&p(0ydcj&$1mr)r1)w*i_'
@@ -159,6 +159,7 @@ LOGGING = {
 
 
 # API KEY de Gemini en Django 
-genai.configure(api_key="AIzaSyCVK5BUF0ekzh3iw_MOeVNPt2Zcb3Wilr4") # AQUI_TU_API_KEY
+genai.configure(api_key="AIzaSyAu7W_xXdirWa_7kCUY-MZCJ_zwFTRzR8c") # AQUI_TU_API_KEY
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyCVK5BUF0ekzh3iw_MOeVNPt2Zcb3Wilr4")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyAu7W_xXdirWa_7kCUY-MZCJ_zwFTRzR8c")
+GEMINI_MODEL_ID = os.getenv("GEMINI_MODEL_ID", "gemini-2.5-flash")
