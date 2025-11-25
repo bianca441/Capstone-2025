@@ -1,0 +1,18 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Media uploads
+media/
+media/cartolas/
+
+# VSCode
+.vscode/
+
+# Compiled files
+*.log
+*.sqlite3
+
+# Environment
+.venv/
+.env

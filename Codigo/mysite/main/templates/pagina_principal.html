@@ -1,4 +1,4 @@
-﻿{% load static number_filters l10n %}
+{% load static number_filters l10n %}
 
 <!DOCTYPE html>
 
@@ -160,29 +160,20 @@
 
     <!-- Sidebar -->
     {% include 'includes/sidebar.html' with active='inicio' %}
+    <a href="#" class="logout-btn" id="logout-link">
     <!-- Modal de confirmaciÃ³n -->
 
-    <div id="logoutModal" class="modal">
-
-        <div class="modal-content">
-
-            <h2>Â¿Cerrar sesiÃ³n?</h2>
-
-            <p>Â¿Estas seguro de que deseas salir de tu cuenta?</p>
-
-            <div class="modal-buttons">
-
-                <button class="btn-cancel" id="cancelLogout">Cancelar</button>
-
-                <button class="btn-confirm" id="confirmLogout">SÃ­, cerrar sesiÃ³n</button>
-
-            </div>
-
-            </div>
-
+   <!-- Modal de confirmación -->
+<div id="logoutModal" class="modal">
+    <div class="modal-content">
+        <h2>¿Cerrar sesión?</h2>
+        <p>¿Estás seguro de que deseas salir de tu cuenta?</p>
+        <div class="modal-buttons">
+            <button type="button" class="btn-cancel" id="cancelLogout">Cancelar</button>
+            <button type="button" class="btn-confirm" id="confirmLogout">Sí, cerrar sesión</button>
         </div>
-
     </div>
+</div>
 
 
 
@@ -222,7 +213,7 @@
 
                 <h1>Bienvenido, {{ request.user.first_name|default:request.user.username }}</h1>
 
-                <p>AquÃ­ estÃ¡ el resumen de tu actividad financiera</p>
+                <p>Aqui­ esta el resumen de tu actividad financiera</p>
 
                 <div class="account-pill">
 
